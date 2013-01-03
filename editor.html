@@ -8,12 +8,15 @@
     <link rel="stylesheet" type="text/css" href="css/stylesheet.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="css/pygment_trac.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="css/print.css" media="print" />
-
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
     <title>Brian by Kinka</title>
+    <style type="text/css">
+    .editor-inner { width: 100%; }
+    .md-preview {width: 48%; float: left; margin-left: 20px;}
+    </style>
   </head>
 
   <body>
@@ -26,28 +29,61 @@
     </header>
 
     <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h3>Here is KinkaBrian</h3>
-		      <p>I have an idea that why not building a blog entirely just in HTML and Javascript?</p>
-          <p>Is it possible? Of course, no ruby, no php and python, but with the help of <a href='https://www.firebase.com/'>FireBase</a>. As it says, it is <blockquote>A scalble real-time backend for your web app</blockquote><blockquote>Firebase lets you create fully interactive apps with just HTML and JavaScript. No servers or server code required. With Firebase you can simplify your code, focus on the problem you're solving, and get things done FAST.</blockquote> OK, <a href='https://www.firebase.com/how-it-works.html'>搞起! Learn more &gt;</a> </p>
-        </section>
-
-        <aside id="sidebar">
-          <a href="https://github.com/Kinka/kinka.github.com/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/Kinka/kinka.github.com/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
-
-          <p class="repo-owner"><a href="https://github.com/Kinka/kinka.github.com"></a> is maintained by <a href="https://github.com/Kinka">Kinka</a>.</p>
-
-          <p>This page was using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
+      <div class="inner clearfix editor-inner">
+        <textarea id="markdown"></textarea>
+        <div id="md_preview" class="md-preview"></div>  
       </div>
     </div>
+<link rel="stylesheet" type="text/css" href="markitup/skins/markitup/style.css" />
+<link rel="stylesheet" type="text/css" href="markitup/sets/markdown/style.css" />
+<link rel="stylesheet" href="css/solarized_light.css">
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>    
+<script type="text/javascript" src="markitup/jquery.markitup.js"></script>
+<script type="text/javascript" src="markitup/sets/markdown/set.js"></script>
+<script type="text/javascript" src="js/markdown.js"></script>
+<script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function()  {
+    hljs.tabReplace = '    ';
+    hljs.initHighlighting();
+
+    var mdRaw = $('#markdown'),
+        mdPreview = $('#md_preview');
+    mdRaw.markItUp(myMarkdownSettings);
+    mdRaw.bind('input', function(e) {
+        var text = mdRaw.val();
+        // text = hljs.highlightAuto(text).value;
+        text = markdown.toHTML(text);
+        mdPreview.html(text);
+        highlightCode();
+    });
+
+});
+
+function highlightCode() {
+    var codes = document.querySelectorAll('pre > code');
+    for(var i=0, len=codes.length; i<len; i++) {
+        hljs.highlightBlock(codes[i]);
+    }
+}
+
+//在光标位置插入文字
+function insertText(obj, str) {
+    obj.focus();
+    if (document.selection) {
+        var sel = document.selection.createRange();
+        sel.text = str;
+    } else if (typeof obj.selectionStart == 'number'
+            && typeof obj.selectionEnd == 'number') {
+        var startPos = obj.selectionStart, endPos = obj.selectionEnd, cursorPos = startPos, tmpStr = obj.value;
+        obj.value = tmpStr.substring(0, startPos) + str
+                + tmpStr.substring(endPos, tmpStr.length);
+        cursorPos += str.length;
+        obj.selectionStart = obj.selectionEnd = cursorPos;
+    } else {
+        obj.value += str;
+    }
+}
+</script>
   </body>
 </html>
