@@ -15,7 +15,26 @@
     <title>Brian by Kinka</title>
     <style type="text/css">
     .editor-inner { width: 100%; }
-    .md-preview {width: 48%; float: left; margin-left: 20px;}
+    .editor-inner .title-wrap { padding-left: 6px;}
+    .editor-inner .title { width: 48%}
+    .editor-inner .action_group { float: left; width: 100%; }
+    .editor-inner .action_group button {margin-left: 6px;}
+    .editor-inner .md-preview {width: 48%; float: left; margin-left: 20px; height: 680px; overflow: auto; resize: vertical;}
+    .editor-inner .markdown .markItUpEditor {height: 600px;}
+
+    .tips {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -150px;
+        width: 300px;
+        font-size: 16px;
+        background-color: rgba(123, 123, 123, 0.2);
+        font-weight: bolder;
+        color: green;
+        padding: 10px;
+        display: none;
+    }
     </style>
   </head>
 
@@ -30,10 +49,15 @@
 
     <div id="content-wrapper">
       <div class="inner clearfix editor-inner">
+        <div class='title-wrap'><input type="text" placeholder="这里输入标题~~" id='blog_title' class='title' /></div>
         <textarea id="markdown"></textarea>
-        <div id="md_preview" class="md-preview"></div>  
+        <div id="md_preview" class="md-preview"></div>
+        <div class="action_group">
+            <button id="btn_save">保存</button>
+        </div>  
       </div>
     </div>
+    <div id="tips" class="tips">哥已经默默帮你保存了。。。</div>
 <link rel="stylesheet" type="text/css" href="markitup/skins/markitup/style.css" />
 <link rel="stylesheet" type="text/css" href="markitup/sets/markdown/style.css" />
 <link rel="stylesheet" href="css/solarized_light.css">
@@ -42,12 +66,15 @@
 <script type="text/javascript" src="markitup/sets/markdown/set.js"></script>
 <script type="text/javascript" src="js/markdown.js"></script>
 <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
+<script type='text/javascript' src='https://cdn.firebase.com/v0/firebase.js'></script>
+<script type="text/javascript" src="https://cdn.firebase.com/v0/firebase-auth-client.js"></script>
 <script type="text/javascript">
 $(document).ready(function()  {
     hljs.tabReplace = '    ';
     hljs.initHighlighting();
 
     var mdRaw = $('#markdown'),
+        bTitle = $('#blog_title'),
         mdPreview = $('#md_preview');
     mdRaw.markItUp(myMarkdownSettings);
     mdRaw.bind('input', function(e) {
@@ -58,6 +85,11 @@ $(document).ready(function()  {
         highlightCode();
     });
 
+    Blog.init(bTitle, mdRaw);
+
+    $('#btn_save').click(function(e) {
+        Blog.save(true);
+    })
 });
 
 function highlightCode() {
@@ -67,23 +99,109 @@ function highlightCode() {
     }
 }
 
-//在光标位置插入文字
-function insertText(obj, str) {
-    obj.focus();
-    if (document.selection) {
-        var sel = document.selection.createRange();
-        sel.text = str;
-    } else if (typeof obj.selectionStart == 'number'
-            && typeof obj.selectionEnd == 'number') {
-        var startPos = obj.selectionStart, endPos = obj.selectionEnd, cursorPos = startPos, tmpStr = obj.value;
-        obj.value = tmpStr.substring(0, startPos) + str
-                + tmpStr.substring(endPos, tmpStr.length);
-        cursorPos += str.length;
-        obj.selectionStart = obj.selectionEnd = cursorPos;
-    } else {
-        obj.value += str;
+var Blog = function() {
+    var bTitle, bContent;
+    var eleTips = null;
+    var brianRef = new Firebase("https://gh-brian.firebaseio.com"),
+        blogId = 0,
+        token = null;
+
+    function init(eleTitle, eleContent) {
+        if(!eleTitle || !eleContent) {
+            console.log('title and content elements are both in need.')
+            return false;
+        } 
+        bTitle = eleTitle;
+        bContent = eleContent;
+
+        blogId = localStorage['blogId'] || 0;
+        if(blogId) { // 是否有未完成的博文
+            bTitle.val(localStorage['blogTitle'] || '');
+            bContent.val(localStorage['blogContent'] || '');
+        } else {
+            localStorage['blogId'] = blogId = parseInt(Math.random()*1000) + (+new Date);
+        }
+
+        bContent.bind('change', store);
+        bContent.trigger('input')
+
+        token = localStorage['token'];
+        if(!token) {
+            generateToken(function(_token) {
+                if(_token)
+                    token = _token;
+            });
+        }
+
+        eleTips = $('#tips').hide()
     }
-}
+
+    function store() {
+        localStorage['blogTitle'] = bTitle.val()
+        localStorage['blogContent'] = bContent.val()
+
+        save();
+    }
+    function clear(canClear) {
+        localStorage.removeItem('blogId')
+        localStorage.removeItem('blogTitle')
+        localStorage.removeItem('blogContent')
+        bTitle.val('');
+        bContent.val('');
+
+        alert('保存成功')
+    }
+
+    // 手动点击按钮保存成功后应该清空本地存储，否则一般认为是系统自动保存博文
+    function save(canClear) {
+        if(token) {
+            brianRef.auth(token, function(success) {
+                var blog = {};
+                blog.title = bTitle.val();
+                blog.content = bContent.val();
+                blog.lastModify = new Date().toLocaleString();
+                if(blog.title || blog.content) {
+                    brianRef.child('/blogs/'+blogId).set(blog, function(success) {
+                        success
+                                ? eleTips.fadeIn().fadeOut(2000) && canClear && clear()
+                                : alert('我只知道保存失败了。。。');
+                    }); // 如何知道这个操作成功了？
+                }
+            });
+        } else {
+            alert('目测你还没有登陆。。。')
+        }
+        
+    }
+
+    function generateToken(cb) {
+        var authClient = new FirebaseAuthClient(brianRef),
+            username = prompt('您的邮箱是？'),
+            password = prompt('您的密码呢？');
+
+        try {
+            authClient.login('password', username, password, function(error, _token, user) {
+                if (!error) {
+                    localStorage['token'] = _token;
+                    localStorage['user'] = JSON.stringify(user);
+
+                    cb && cb(_token);
+                } else {
+                    alert(error)
+                }
+            });
+        } catch(e) {
+            alert(e)
+            cb && cb(null);
+        }
+        
+    }
+
+    return {
+        init: init,
+        save: save
+    }
+}();
 </script>
   </body>
 </html>

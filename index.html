@@ -34,6 +34,9 @@
         </section>
 
         <aside id="sidebar">
+            <div id="blog_list">
+                
+            </div>
           <a href="https://github.com/Kinka/kinka.github.com/zipball/master" class="button">
             <small>Download</small>
             .zip file
@@ -50,6 +53,82 @@
       </div>
     </div>
 
-  
+<link rel="stylesheet" href="css/solarized_light.css">
+<script type="text/javascript" src="js/markdown.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>  
+<script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
+<script type='text/javascript' src='https://cdn.firebase.com/v0/firebase.js'></script>
+<script type="text/javascript" src="https://cdn.firebase.com/v0/firebase-auth-client.js"></script>
+<script type="text/javascript">
+
+Blog = function() {
+    var bList,
+        mainContent;
+    var brianRef = new Firebase("https://gh-brian.firebaseio.com"),
+        blogs = {};
+
+    function init() {
+        bList = $('#blog_list');
+        mainContent = $('#main-content');
+        genList();
+    }
+
+    function genList() {
+        var blogRef = brianRef.child('blogs').limit(3);
+        blogRef.on('value', function(data) {
+            var ul = document.createElement('ul');
+            data.forEach(function(child) {
+                var li = document.createElement('li');
+                var bId = child.name(),
+                    blog = child.val();
+                blog.title = blog.title || blog.content.substr(0, 10);
+                blogs[bId] = blog;
+                li.setAttribute('id', bId);
+                li.innerHTML = "<a href=#!" + bId + ">" + blog.title + "</a>";
+                ul.appendChild(li);
+            });
+            bList.append(ul);
+
+            show();
+        });
+    }
+
+    function show(bId) {
+        bId = bId || location.hash.substr(2);
+        if(!bId) {
+            for(var b in blogs) {
+                bId = b;
+                break;
+            }
+        }
+        if(!bId) return;
+
+        var blog = blogs[bId],
+            title = "<h3>" + blog.title + "</h3>",
+            content = markdown.toHTML(blog.content);
+        mainContent.html(title + content);
+        highlightCode();
+    }
+
+    return {
+        init: init,
+        show: show
+    };
+}();
+
+Blog.init();
+
+$(window).bind('hashchange', function(e) {
+    Blog.show();
+})
+
+function highlightCode() {
+    var codes = document.querySelectorAll('pre > code');
+    for(var i=0, len=codes.length; i<len; i++) {
+        hljs.highlightBlock(codes[i]);
+    }
+}    
+
+</script>  
   </body>
 </html>
