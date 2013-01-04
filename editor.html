@@ -149,7 +149,7 @@ var Blog = function() {
         bTitle.val('');
         bContent.val('');
 
-        alert('保存成功')
+        // alert('保存成功')
     }
 
     // 手动点击按钮保存成功后应该清空本地存储，否则一般认为是系统自动保存博文
@@ -176,8 +176,8 @@ var Blog = function() {
 
     function generateToken(cb) {
         var authClient = new FirebaseAuthClient(brianRef),
-            username = prompt('您的邮箱是？'),
-            password = prompt('您的密码呢？');
+            username = 'test@kinka.com' || prompt('您的邮箱是？'),
+            password = 'testing' || prompt('您的密码呢？');
 
         try {
             authClient.login('password', username, password, function(error, _token, user) {

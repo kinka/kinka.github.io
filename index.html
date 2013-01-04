@@ -12,8 +12,31 @@
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
     <title>Brian by Kinka</title>
+    <style type="text/css">
+    .blog-list {
+        max-height: 200px;
+        overflow: auto;
+    }
+    .blog-list li {
+        list-style: none;
+        line-height: 24px;
+    }
+    .blog-list li:hover {
+        background-color: rgb(42, 132, 220);
+    }
+    .blog-list li:hover a {
+        color: white;
+    }
+
+    .inner .blog-time {
+        margin-top: -32px;
+        font-size: 24px;
+        opacity: 0.2;
+        float: right;
+        display: block;
+    }
+    </style>
   </head>
 
   <body>
@@ -34,17 +57,21 @@
         </section>
 
         <aside id="sidebar">
-            <div id="blog_list">
+            <div id="blog_list" class="blog-list">
                 
             </div>
+            <a href="editor.html" class="button">
+                <small>Have a try</small>
+                editor
+            </a>
           <a href="https://github.com/Kinka/kinka.github.com/zipball/master" class="button">
             <small>Download</small>
             .zip file
           </a>
-          <a href="https://github.com/Kinka/kinka.github.com/tarball/master" class="button">
+<!--           <a href="https://github.com/Kinka/kinka.github.com/tarball/master" class="button">
             <small>Download</small>
             .tar.gz file
-          </a>
+          </a> -->
 
           <p class="repo-owner"><a href="https://github.com/Kinka/kinka.github.com"></a> is maintained by <a href="https://github.com/Kinka">Kinka</a>.</p>
 
@@ -104,10 +131,17 @@ Blog = function() {
         if(!bId) return;
 
         var blog = blogs[bId],
-            title = "<h3>" + blog.title + "</h3>",
+            date = new Date(blog.lastModify),
+            title = "<h3>" + blog.title + "</h3>\
+                <span class='blog-time'>" + date.toLocaleDateString() + ' ' + date.toLocaleTimeString() + "</span>",
             content = markdown.toHTML(blog.content);
         mainContent.html(title + content);
         highlightCode();
+
+        // for editor
+        localStorage['blogId'] = bId;
+        localStorage['blogTitle'] = blog.title;
+        localStorage['blogContent'] = blog.content;
     }
 
     return {
