@@ -1,168 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html ng-app='blogApp'>
   <head>
     <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="css/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="css/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="css/print.css" media="print" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" media="screen" />
+    <body ng-controller='BlogCtrl'>
+    Hello, Welcome!
+    Kinka is back!
+    中文
+    <ul id='blog_list' ng-repeat='blog in blogs'>
+        <li>{{blog.title}}</li>
+    </ul>
+    </body>
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <title>Brian by Kinka</title>
-    <style type="text/css">
-    .blog-list {
-        max-height: 200px;
-        overflow: auto;
-    }
-    .blog-list li {
-        list-style: none;
-        line-height: 24px;
-    }
-    .blog-list li:hover {
-        background-color: rgb(42, 132, 220);
-    }
-    .blog-list li:hover a {
-        color: white;
-    }
-
-    .inner .blog-time {
-        margin-top: -32px;
-        font-size: 24px;
-        opacity: 0.2;
-        float: right;
-        display: block;
-    }
-    </style>
-  </head>
-
-  <body>
-    <header>
-      <div class="inner">
-        <h1>Brian</h1>
-        <h2>I'm trying to build a blog in github, purely in js.</h2>
-        <a href="https://github.com/Kinka/kinka.github.com" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
-
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h3>Here is KinkaBrian</h3>
-		      <p>I have an idea that why not building a blog entirely just in HTML and Javascript?</p>
-          <p>Is it possible? Of course, no ruby, no php and python, but with the help of <a href='https://www.firebase.com/'>FireBase</a>. As it says, it is <blockquote>A scalble real-time backend for your web app</blockquote><blockquote>Firebase lets you create fully interactive apps with just HTML and JavaScript. No servers or server code required. With Firebase you can simplify your code, focus on the problem you're solving, and get things done FAST.</blockquote> OK, <a href='https://www.firebase.com/how-it-works.html'>搞起! Learn more &gt;</a> </p>
-        </section>
-
-        <aside id="sidebar">
-            <div id="blog_list" class="blog-list">
-                
-            </div>
-            <a href="editor.html" class="button">
-                <small>Have a try</small>
-                editor
-            </a>
-          <a href="https://github.com/Kinka/kinka.github.com/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-<!--           <a href="https://github.com/Kinka/kinka.github.com/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a> -->
-
-          <p class="repo-owner"><a href="https://github.com/Kinka/kinka.github.com"></a> is maintained by <a href="https://github.com/Kinka">Kinka</a>.</p>
-
-          <p>This page was using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
-    </div>
-
-<link rel="stylesheet" href="css/solarized_light.css">
-<script type="text/javascript" src="js/markdown.js"></script>
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>  
-<script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
-<script type='text/javascript' src='https://cdn.firebase.com/v0/firebase.js'></script>
-<script type="text/javascript" src="https://cdn.firebase.com/v0/firebase-auth-client.js"></script>
+<script src='js/angular.js'></script>
+<script src='js/firebase.js'></script>
+<script src="js/firebase-simple-login.js"></script>
+<script src="js/angularfire.min.js"></script>
 <script type="text/javascript">
+function $(id){
+    return document.getElementById(id);
+}
 
-Blog = function() {
-    var bList,
-        mainContent;
-    var brianRef = new Firebase("https://gh-brian.firebaseio.com"),
-        blogs = {};
-
-    function init() {
-        bList = $('#blog_list');
-        mainContent = $('#main-content');
-        genList();
+function Blog($q) {
+    var ref = new Firebase('https://gh-brian.firebaseio.com');
+    this._q = $q;
+    this._ref = ref;
+}
+Blog.prototype = {
+    getList: function() {
+        var self = this;
+        var deffered = self._q.defer();
+        var gotList = function(snapshot){
+            var value = snapshot.val();
+            deffered.resolve(value);
+        };        
+        self._ref.child('blogs').on('value', gotList);
+        return deffered.promise;
     }
+}
 
-    function genList() {
-        var blogRef = brianRef.child('blogs').limit(3);
-        blogRef.on('value', function(data) {
-            var ul = document.createElement('ul');
-            data.forEach(function(child) {
-                var li = document.createElement('li');
-                var bId = child.name(),
-                    blog = child.val();
-                blog.title = blog.title || blog.content.substr(0, 10);
-                blogs[bId] = blog;
-                li.setAttribute('id', bId);
-                li.innerHTML = "<a href=#!" + bId + ">" + blog.title + "</a>";
-                ul.appendChild(li);
-            });
-            bList.append(ul);
-
-            show();
-        });
-    }
-
-    function show(bId) {
-        bId = bId || location.hash.substr(2);
-        if(!bId) {
-            for(var b in blogs) {
-                bId = b;
-                break;
+var blogApp = angular.module('blogApp', ['firebase']);
+blogApp.controller('BlogCtrl', function($scope, $q, $firebase) {
+    var ref = new Firebase('https://gh-brian.firebaseio.com');
+    $scope.blogs = $firebase(ref.child('blogs'));
+    var titles = [];
+    $scope.$watchCollection('blogs', function(newBlogs, oldBlogs) {
+        for (var k in newBlogs) {
+            if (angular.isString(k) && k.indexOf('$')<0) {
+                titles.indexOf(k)<0 && titles.push(k);
             }
         }
-        if(!bId) return;
-
-        var blog = blogs[bId],
-            date = new Date(blog.lastModify),
-            title = "<h3>" + blog.title + "</h3>\
-                <span class='blog-time'>" + date.toLocaleDateString() + ' ' + date.toLocaleTimeString() + "</span>",
-            content = markdown.toHTML(blog.content);
-        mainContent.html(title + content);
-        highlightCode();
-
-        // for editor
-        localStorage['blogId'] = bId;
-        localStorage['blogTitle'] = blog.title;
-        localStorage['blogContent'] = blog.content;
-    }
-
-    return {
-        init: init,
-        show: show
-    };
-}();
-
-Blog.init();
-
-$(window).bind('hashchange', function(e) {
-    Blog.show();
-})
-
-function highlightCode() {
-    var codes = document.querySelectorAll('pre > code');
-    for(var i=0, len=codes.length; i<len; i++) {
-        hljs.highlightBlock(codes[i]);
-    }
-}    
-
+        console.log(titles);
+        });
+});
 </script>  
-  </body>
 </html>
