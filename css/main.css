@@ -29,6 +29,7 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+    padding: 9px;
 }
 ol, ul {
 	list-style: none;
@@ -265,3 +266,6 @@ footer a:hover {
 * html .clearfix {height: 1%;}
 .clearfix {display: block;}
 
+.blog-list {
+    float: left; margin-right: 24px;
+}

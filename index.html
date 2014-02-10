@@ -5,113 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" type="text/css" href="css/main.css" media="screen" />
     <body ng-controller='BlogCtrl'>
-        <div>
+        <div class='navigator'>
             email: <input type='text' value='{{email}}' ng-model='email'> 
             password: <input type='password' value='{{password}}' ng-model='password'>
-            <button ng-click='doLogin()'>登录</button></div>
-        Hello, {{email}}
-    <ul id='blog_list' ng-repeat='(index, blog) in blogs.list'>
-        <li ng-click='titleClick(index)'>{{blog.title}}</li>
-    </ul>
-    <span>{{currBlog.title}}</span>
-    <textarea ng-change='contentChange(currBlog.index)' ng-model='currBlog.content'>{{currBlog.content}}</textarea>
+            <button ng-click='doLogin()'>登录</button>
+            <span ng-show='email'>Hello, {{email}}</span>
+        </div>
+        <ul class='blog-list' id='blog_list'> 
+            <li ng-click='titleClick(index)' ng-repeat='(index, blog) in blogs.list'>{{blog.title}}</li>
+        </ul>
+        <h1 class='blog-title'>{{currBlog.title}}</h1>
+        <div class='blog-content'>{{currBlog.content}}</div>
+        <textarea class='blog-editor' ng-change='contentChange(currBlog.index)' ng-model='currBlog.content'>{{currBlog.content}}</textarea>
     </body>
 
-<script src='js/angular.js'></script>
+<script src='js/angular.min.js'></script>
 <script src='js/firebase.js'></script>
 <script src="js/firebase-simple-login.js"></script>
 <script src="js/angularfire.min.js"></script>
-<script type="text/javascript">
-function $(id){
-    return document.getElementById(id);
-}
-
-function Blog($q) {
-    var ref = new Firebase('https://gh-brian.firebaseio.com');
-    this._q = $q;
-    this._ref = ref;
-}
-Blog.prototype = {
-    getList: function() {
-        var self = this;
-        var deffered = self._q.defer();
-        var gotList = function(snapshot){
-            var value = snapshot.val();
-            deffered.resolve(value);
-        };        
-        self._ref.child('blogs').on('value', gotList);
-        return deffered.promise;
-    }
-}
-
-var blogApp = angular.module('blogApp', ['firebase']);
-blogApp.controller('BlogCtrl', function($scope, $q, $timeout, $firebase, $firebaseAuth) {
-    var ref = new Firebase('https://gh-brian.firebaseio.com');
-    $scope.blogs = $firebase(ref.child('blogs'));
-
-    $scope.titleClick = function(index) {
-        $scope.currBlog = $scope.blogs.list[index];
-        $scope.currBlog.index = index;
-    }
-    var tid = null;    
-    $scope.contentChange = function(index) {
-        if ($scope.$$user) {
-            if (tid) $timeout.cancel(tid);
-            tid = $timeout(function() {
-                $scope.blogs.$child('list/' + index + '/content').$set($scope.currBlog.content);
-                console.log('默默地changed...');
-            }, 10000);
-        }
-        else {
-            console.log('no login yet...');
-            /*$scope.doLogin().then(function() {
-                $scope.contentChange(index);
-            }, function(err) {
-                console.log('login err ' + err);    
-            });*/
-        }
-    }
-
-    $scope.doLogin = function() {
-        console.log('...');
-        $scope.auth = $firebaseAuth(ref);
-
-        var deffered = $q.defer();
-        $scope.$on('$firebaseAuth:login', function(e, user) {
-            $scope.password = '';
-            user = user.d || user;
-            $scope.$$user = user;
-            deffered.resolve(user);
-            $scope.afterLogin();
-            if (user.firebaseAuthToken) {
-                localStorage['firebaseAuthToken'] = user.firebaseAuthToken;
-                localStorage['email'] = user.email;
-            }
-        });
-        if (localStorage['firebaseAuthToken'])
-            $scope.auth.$login(localStorage['firebaseAuthToken']).then(angular.noop, function(err) {
-                deffered.reject(err);
-                console.log('err: ' + err);
-            });
-        else {
-            $scope.auth.$login('password', {email:$scope.email, password: $scope.password}).then(angular.noop, function(err) {
-                deffered.reject(err);    
-                console.log(err);
-            });
-        }
-        return deffered.promise;
-    }
-    $scope.afterLogin = function() {
-        var user = $scope.$$user;
-        var nice = false;
-        if (user)
-            nice = true;
-        if (!nice)
-            return;
-        $scope.afterLogin = angular.noop;
-        console.log('Welcome, ' + user.email);
-        return;
-    }
-});
-</script>  
+<script src='js/app.js'></script>
 </html>
