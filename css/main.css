@@ -267,5 +267,14 @@ footer a:hover {
 .clearfix {display: block;}
 
 .blog-list {
-    float: left; margin-right: 24px;
+    float: left; margin-right: 24px; width: 5%; min-width: 200px;
+}
+.blog-editor-wrap {
+    float: left; width: 40%; 
+}
+.blog-editor {
+    width: 100%; height: 100%;
+}
+.blog-content {
+    float: left; width: 40%;
 }
