@@ -9,17 +9,17 @@
         <div class='navigator'>
             email: <input type='text' value='{{email}}' ng-model='email'> 
             password: <input type='password' value='{{password}}' ng-model='password'>
-            <button ng-click='doLogin()'>登录</button>
+            <button ng-click='doLogin()'>登录</button>(test account: tt@last.com password: 123456)
             <span ng-show='email'>Hello, {{email}}</span>
         </div>
         <h1 class='blog-title'>{{currBlog.title}}</h1>
         <ul class='blog-list' id='blog_list'> 
             <li ng-click='titleClick(index)' ng-repeat='(index, blog) in blogs.list'>{{blog.title}}</li>
         </ul>
-        <div class='blog-content'>{{currBlog.content | markdown}}</div>
+
+        <div class='blog-content editor-wrapper' ng-bind-html='currBlog.content | markdown'></div>
         <div class='blog-editor-wrap editor-wrapper'>
-            <button ng-click='saveBlog()'>save</button>
-            <input class='blog-editor-title title' value='{{currBlog.title}}'>
+            <input class='blog-editor-title title' ng-model='currBlog.title'>
             <textarea class='blog-editor editor' ng-change='contentChange(currBlog.index)' ng-model='currBlog.content'>{{currBlog.content}}</textarea>
         </div>
         <div class='clearfix'></div>

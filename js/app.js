@@ -3,16 +3,16 @@ function $(id){
 }
 var editor;
 var blogApp = angular.module('blogApp', ['firebase']);
-blogApp.filter('markdown', function() {
+blogApp.filter('markdown', function($sce) {
     return function(text) {
         if (text)
-            return Editor.markdown(text);
+            return $sce.trustAsHtml(Editor.markdown(text));
         else
             return '';
     }
 });
 
-blogApp.controller('BlogCtrl', function($scope, $q, $timeout, $firebase, $firebaseAuth) {
+blogApp.controller('BlogCtrl', function($scope, $q, $timeout, $firebase, $firebaseAuth, $sce) {
     var ref = new Firebase('https://gh-brian.firebaseio.com');
     $scope.blogs = $firebase(ref.child('blogs'));
     $scope.blogs.$on('loaded', function(v) {
@@ -56,6 +56,8 @@ blogApp.controller('BlogCtrl', function($scope, $q, $timeout, $firebase, $fireba
         }
 
         index = index || $scope.currBlog.index;
+        
+        $scope.blogs.$child('list/'+index+'/title').$set($scope.currBlog.title);
         $scope.cm.save();
         $scope.currBlog.content = $scope.cm.getValue();
         $scope.blogs.$child('list/' + index + '/content').$set($scope.currBlog.content);

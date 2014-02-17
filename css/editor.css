@@ -396,7 +396,6 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
 }
 .editor-preview {
   position: absolute;
-  padding: 4px;
   width: 100%;
   height: 100%;
   top: 0;
