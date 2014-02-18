@@ -12,13 +12,20 @@ blogApp.filter('markdown', function($sce) {
     }
 });
 
-blogApp.controller('BlogCtrl', function($scope, $q, $timeout, $firebase, $firebaseAuth, $sce) {
+blogApp.controller('BlogCtrl', function($scope, $q, $timeout, $firebase, $firebaseAuth, $animate) {
     var ref = new Firebase('https://gh-brian.firebaseio.com');
     $scope.blogs = $firebase(ref.child('blogs'));
     $scope.blogs.$on('loaded', function(v) {
+        $scope.editor = new Editor({shortcuts: {
+            'Cmd-S': function() {$scope.saveBlog();}
+        }});
+        editor = $scope.editor;
+        $scope.editor.render();
+
         var index = v.index[0];
         $scope.currBlog = v.list[index];
         $scope.currBlog.index = index;
+        $scope.blogLoaded = true;
         $scope.cm = $scope.editor.codemirror;
         $scope.cm.setValue($scope.currBlog.content);
     });
@@ -63,12 +70,6 @@ blogApp.controller('BlogCtrl', function($scope, $q, $timeout, $firebase, $fireba
         $scope.blogs.$child('list/' + index + '/content').$set($scope.currBlog.content);
         console.log('blog saved...');
     }
-
-    $scope.editor = new Editor({shortcuts: {
-        'Cmd-S': function() {$scope.saveBlog();}
-    }});
-    $scope.editor.render();
-    editor = $scope.editor;
 
     $scope.$$loginDeffered;// = $q.defer();
     $scope.$on('$firebaseAuth:login', function(e, user) {

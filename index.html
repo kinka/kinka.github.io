@@ -12,15 +12,16 @@
             <button ng-click='doLogin()'>登录</button>(test account: tt@last.com password: 123456)
             <span ng-show='email'>Hello, {{email}}</span>
         </div>
+        <img ng-show='!blogLoaded' src='img/triangle_loading.gif'>
         <h1 class='blog-title'>{{currBlog.title}}</h1>
         <ul class='blog-list' id='blog_list'> 
             <li ng-click='titleClick(index)' ng-repeat='(index, blog) in blogs.list'>{{blog.title}}</li>
         </ul>
 
-        <div class='blog-content editor-wrapper' ng-bind-html='currBlog.content | markdown'></div>
+        <div class='blog-content editor-wrapper' ng-bind-html='currBlog.content | markdown' ng-if='blogLoaded'></div>
         <div class='blog-editor-wrap editor-wrapper'>
             <input class='blog-editor-title title' ng-model='currBlog.title'>
-            <textarea class='blog-editor editor' ng-change='contentChange(currBlog.index)' ng-model='currBlog.content'>{{currBlog.content}}</textarea>
+            <textarea class='blog-editor editor' ng-change='contentChange(currBlog.index)' ng-model='currBlog.content' ng-show='blogLoaded'></textarea>
         </div>
         <div class='clearfix'></div>
     </body>

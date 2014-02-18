@@ -278,3 +278,12 @@ footer a:hover {
 .blog-content {
     float: left; width: 40%;
 }
+
+.navigator:hover { 
+    -webkit-transition: 0.5s ease-in all; margin-left:0;
+}
+.navigator{ 
+    -webkit-transition: 0.5s ease-out all; margin-left: -444px;
+}
+
+

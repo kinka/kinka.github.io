@@ -6729,7 +6729,8 @@ var shortcuts = {
   'Cmd-Alt-I': drawImage,
   "Cmd-'": toggleBlockquote,
   'Cmd-Alt-L': toggleOrderedList,
-  'Cmd-L': toggleUnOrderedList
+  'Cmd-L': toggleUnOrderedList,
+  'Cmd-Q': togglePreview
 };
 
 
