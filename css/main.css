@@ -27,10 +27,6 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
-body {
-	line-height: 1;
-    padding: 9px;
-}
 ol, ul {
 	list-style: none;
 }
@@ -267,8 +263,10 @@ footer a:hover {
 .clearfix {display: block;}
 
 .blog-list {
-    float: left; margin-right: 24px; width: 5%; min-width: 200px;
+    float: left; margin-right: 24px; width: 5%; min-width: 200px; font-size: 12px; line-height: 24px;
+    cursor: pointer; color: black;
 }
+.blog-list li:hover { opacity: 0.6; }
 .blog-editor-wrap {
     float: left; width: 40%; 
 }
@@ -279,11 +277,14 @@ footer a:hover {
     float: left; width: 40%;
 }
 
-.navigator:hover { 
+.navigator.logoff:hover { 
     -webkit-transition: 0.5s ease-in all; margin-left:0;
 }
 .navigator{ 
+    display: inline-block;
     -webkit-transition: 0.5s ease-out all; margin-left: -444px;
+    background: #eee; line-height: 36px; height: 36px; padding: 0 9px;
 }
+.ng-cloak {display: none;}
 
 

@@ -5,22 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" type="text/css" href="css/editor.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="css/main.css" media="screen" />
-    <body ng-controller='BlogCtrl'>
-        <div class='navigator'>
+    <body ng-controller='BlogCtrl' ng-cloak>
+        <div class='navigator' ng-class='{logoff:!logon}'>
             email: <input type='text' value='{{email}}' ng-model='email'> 
             password: <input type='password' value='{{password}}' ng-model='password'>
-            <button ng-click='doLogin()'>登录</button>(test account: tt@last.com password: 123456)
+            <button ng-click='doLogin()' ng-hide='logon'>登录</button>
+            <button ng-click='doLogoff()' ng-show='logon'>退出</button>(test account: tt@last.com password: 123456)
             <span ng-show='email'>Hello, {{email}}</span>
         </div>
         <img ng-show='!blogLoaded' src='img/triangle_loading.gif'>
         <h1 class='blog-title'>{{currBlog.title}}</h1>
         <ul class='blog-list' id='blog_list'> 
-            <li ng-click='titleClick(index)' ng-repeat='(index, blog) in blogs.list'>{{blog.title}}</li>
+            <li ng-click='titleClick(index)' title='{{blog.title}}' ng-repeat='(index, blog) in blogs.list'>{{blog.title}}</li>
         </ul>
 
         <div class='blog-content editor-wrapper' ng-bind-html='currBlog.content | markdown' ng-if='blogLoaded'></div>
         <div class='blog-editor-wrap editor-wrapper'>
-            <input class='blog-editor-title title' ng-model='currBlog.title'>
+            <input class='blog-editor-title title' ng-model='currBlog.title' ng-change='contentChange()'>
             <textarea class='blog-editor editor' ng-change='contentChange(currBlog.index)' ng-model='currBlog.content' ng-show='blogLoaded'></textarea>
         </div>
         <div class='clearfix'></div>

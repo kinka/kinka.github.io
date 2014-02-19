@@ -39,27 +39,17 @@ blogApp.controller('BlogCtrl', function($scope, $q, $timeout, $firebase, $fireba
 
     var tid = null;    
     $scope.contentChange = function(index) {
-        if ($scope.$$user) {
-            if (tid) $timeout.cancel(tid);
-            tid = $timeout(function() {
-                $scope.saveBlog(index);
-                console.log('silently changed...');
-            }, 10000);
-        }
-        else {
-            console.log('no login yet...');
-            /*$scope.doLogin().then(function() {
-                $scope.contentChange(index);
-            }, function(err) {
-                console.log('login err ' + err);    
-            });*/
-        }
+        if (tid) $timeout.cancel(tid);
+        tid = $timeout(function() {
+            $scope.saveBlog(index);
+        }, 2000);
     }
-
+    
     $scope.saveBlog = function(index) {
-        if (! $scope.$$user) {
-            $scope.doLogin().then(function() {$scope.saveBlog.call($scope, index)});
-            return;
+        if (! $scope.logon) {
+            $scope.doLogin().then(function(user) {
+                $scope.saveBlog.call($scope, index)
+            });
         }
 
         index = index || $scope.currBlog.index;
@@ -73,14 +63,13 @@ blogApp.controller('BlogCtrl', function($scope, $q, $timeout, $firebase, $fireba
 
     $scope.$$loginDeffered;// = $q.defer();
     $scope.$on('$firebaseAuth:login', function(e, user) {
-        if ($scope.$$user) return;
+        if ($scope.logon) return;
 
         $scope.password = '';
         user = user.d || user;
-        $scope.$$user = user;
         $scope.email = user.email;
         $scope.$$loginDeffered.resolve(user);
-        $scope.afterLogin();
+        $scope.afterLogin(user);
         if (user.firebaseAuthToken) {
             localStorage['firebaseAuthToken'] = user.firebaseAuthToken;
             localStorage['email'] = user.email;
@@ -109,16 +98,17 @@ blogApp.controller('BlogCtrl', function($scope, $q, $timeout, $firebase, $fireba
         }
         return $scope.$$loginDeffered.promise;
     }
-    $scope.afterLogin = function() {
-        var user = $scope.$$user;
-        var nice = false;
-        if (user)
-            nice = true;
-        if (!nice)
+    $scope.afterLogin = function(user) {
+        if (!user)
             return;
-        $scope.afterLogin = angular.noop;
+        $scope.logon = true;
         console.log('Welcome, ' + user.email);
         return;
+    }
+    $scope.doLogoff = function() {
+        $scope.auth.$logout();
+        localStorage.removeItem('firebaseAuthToken');
+        $scope.logon = false;
     }
 });
 
