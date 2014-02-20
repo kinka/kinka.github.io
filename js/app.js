@@ -28,6 +28,8 @@ blogApp.controller('BlogCtrl', function($scope, $q, $timeout, $firebase, $fireba
         $scope.blogLoaded = true;
         $scope.cm = $scope.editor.codemirror;
         $scope.cm.setValue($scope.currBlog.content);
+
+        $scope.previewState = 'preview';
     });
 
     $scope.titleClick = function(index) {
@@ -50,6 +52,7 @@ blogApp.controller('BlogCtrl', function($scope, $q, $timeout, $firebase, $fireba
             $scope.doLogin().then(function(user) {
                 $scope.saveBlog.call($scope, index)
             });
+            return;
         }
 
         index = index || $scope.currBlog.index;
@@ -61,6 +64,7 @@ blogApp.controller('BlogCtrl', function($scope, $q, $timeout, $firebase, $fireba
         console.log('blog saved...');
     }
 
+    /*******login********/
     $scope.$$loginDeffered;// = $q.defer();
     $scope.$on('$firebaseAuth:login', function(e, user) {
         if ($scope.logon) return;
@@ -94,6 +98,8 @@ blogApp.controller('BlogCtrl', function($scope, $q, $timeout, $firebase, $fireba
             $scope.auth.$login('password', {email:$scope.email, password: $scope.password}).then(angular.noop, function(err) {
                 $scope.$$loginDeffered.reject(err);    
                 console.log('password err:' + err);
+                $('navigator').classList &&
+                    $('navigator').classList.add('focus');
             });
         }
         return $scope.$$loginDeffered.promise;
@@ -110,5 +116,6 @@ blogApp.controller('BlogCtrl', function($scope, $q, $timeout, $firebase, $fireba
         localStorage.removeItem('firebaseAuthToken');
         $scope.logon = false;
     }
+    $scope.doLogin();
 });
 
