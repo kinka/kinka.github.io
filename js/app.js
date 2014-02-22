@@ -23,13 +23,12 @@ blogApp.controller('BlogCtrl', function($scope, $q, $timeout, $firebase, $fireba
         $scope.editor.render();
 
         var index = v.index[0];
-        $scope.currBlog = v.list[index];
-        $scope.currBlog.index = index;
-        $scope.blogLoaded = true;
-        $scope.cm = $scope.editor.codemirror;
-        $scope.cm.setValue($scope.currBlog.content);
-
-        $scope.previewState = 'preview';
+        $timeout(function() {
+            $scope.titleClick(index);
+            $scope.blogLoaded = true;
+            $scope.previewState = 'preview';
+            console.log($scope.blogs.$child('list').$getIndex());
+        });
     });
 
     $scope.titleClick = function(index) {
@@ -69,6 +68,7 @@ blogApp.controller('BlogCtrl', function($scope, $q, $timeout, $firebase, $fireba
     $scope.$on('$firebaseAuth:login', function(e, user) {
         if ($scope.logon) return;
 
+        $scope.loading = false;
         $scope.password = '';
         user = user.d || user;
         $scope.email = user.email;
@@ -81,6 +81,7 @@ blogApp.controller('BlogCtrl', function($scope, $q, $timeout, $firebase, $fireba
         console.log('end login...');
     });
     $scope.doLogin = function() {
+        $scope.loading = true;
         console.log('begin login...');
         $scope.$$loginDeffered = $q.defer();
         // if current session is still on, it will auth once, and then $scope.auth.$login will auth the second
