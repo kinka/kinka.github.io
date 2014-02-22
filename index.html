@@ -14,6 +14,7 @@
             <span ng-show='email'>Hello, {{email}}</span>
             <select ng-show='logon' ng-model='previewState' 
                 ng-options="s for s in ['preview', 'editing', 'realtime']"></select>
+            <button ng-click='saveBlog()' ng-show='logon && previewState=="editing"'>Save</button>
             <button ng-click='doAdd()' ng-show='logon'>Add</button>
             <button ng-click='doDel()' ng-show='logon'>{{deling?'Confirm!':'Del?'}}</button>
             (test account: tt@last.com password: 123456)
