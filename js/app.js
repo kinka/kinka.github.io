@@ -38,9 +38,12 @@ blogApp.controller('BlogCtrl', function($scope, $q, $timeout, $firebase, $fireba
         };
     });
 
-    $scope.editor = new Editor({shortcuts: {
+    $scope.editor = new Editor({
+        shortcuts: {
         'Cmd-S': function() {$scope.saveBlog();}
-    }});
+        },
+        fullScreenWrapper: document.querySelector(".blog-editor-wrap")
+    });
     editor = $scope.editor;
     $scope.selectBlog = function(index) {
         $scope.currBlog = $scope.blogs[index];

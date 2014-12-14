@@ -4,7 +4,6 @@
 // CodeMirror is the only global var we claim
 var CodeMirror = (function() {
   "use strict";
-
   // BROWSER SNIFFING
 
   // Crude, but necessary to handle a number of hard-to-feature-detect
@@ -5438,7 +5437,7 @@ var CodeMirror = (function() {
         if (/\w/.test(str.charAt(i - 2)) && /[^\-?\.]/.test(str.charAt(i))) return true;
         if (i > 2 && /[\d\.,]/.test(str.charAt(i - 2)) && /[\d\.,]/.test(str.charAt(i))) return false;
       }
-      return /[~!#%&*)=+}\]|\"\.>,:;][({[<]|-[^\-?\.\u2010-\u201f\u2026]|\?[\w~`@#$%\^&*(_=+{[|><]|¡­[\w~`@#$%\^&*(_=+{[><]/.test(str.slice(i - 1, i + 1));
+      return /[~!#%&*)=+}\]|\"\.>,:;][({[<]|-[^\-?\.\u2010-\u201f\u2026]|\?[\w~`@#$%\^&*(_=+{[|><]|ï¿½ï¿½[\w~`@#$%\^&*(_=+{[><]/.test(str.slice(i - 1, i + 1));
     };
 
   var knownScrollbarWidth;
@@ -6812,8 +6811,8 @@ function getState(cm, pos) {
  * Toggle full screen of the editor.
  */
 function toggleFullScreen(editor) {
-  var el = editor.codemirror.getWrapperElement();
-
+  //var el = editor.codemirror.getWrapperElement();
+  var el = editor.fullScreenWrapper || editor.codemirror.getWrapperElement();
   // https://developer.mozilla.org/en-US/docs/DOM/Using_fullscreen_mode
   var doc = document;
   var isFull = doc.fullScreen || doc.mozFullScreen || doc.webkitFullScreen;
@@ -7117,6 +7116,7 @@ function Editor(options) {
     for (var s in options.shortcuts)
         shortcuts[s] = options.shortcuts[s];
   }
+  this.fullScreenWrapper = options.fullScreenWrapper;
 
   // If user has passed an element, it should auto rendered
   if (this.element) {
