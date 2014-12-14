@@ -293,7 +293,7 @@ footer a:hover {
 }
 .navigator{ 
     display: inline-block;
-    transition: 0.5s ease-out all; margin-left: -444px;
+    transition: 0.5s ease-out all; margin-left: -482px;
     background: #eee; line-height: 36px; height: 36px; padding: 0 9px;
 }
 .ng-cloak {display: none;}
@@ -335,6 +335,7 @@ footer a:hover {
 .msgbox {
     position: fixed; z-index: 999; width: 300px; padding: 30px; left: 50%; 
     margin-left: -165px; top: 100px; background: bisque; opacity: 0; display: none; border-radius: 9px;
+	text-align:center;
     font:16px/1.62 "Helvetica Neue", "Xin Gothic", "Hiragino Sans GB", "WenQuanYi Micro Hei", "Microsoft YaHei", sans-serif; 
 }
 .msgbox.show {

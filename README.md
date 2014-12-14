@@ -1,2 +1,2 @@
-kinka.github.com
+kinka.github.io
 ================
