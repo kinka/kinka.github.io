@@ -7,8 +7,10 @@
     <link rel="stylesheet" type="text/css" href="css/main.css" media="screen" />
     <body ng-controller='BlogCtrl' ng-cloak>
         <div class='navigator' id='navigator' ng-class='{logoff:!logon}'>
-            email: <input type='text' value='{{email}}' ng-model='email'> 
-            password: <input type='password' value='{{password}}' ng-model='password'>
+            <div class="input-area">
+                email: <input type='text' value='{{email}}' ng-model='email'>
+                password: <input type='password' value='{{password}}' ng-model='password'>
+            </div>
             <button ng-click='doLogin()' ng-hide='logon'>登录</button>
             <button ng-click='doLogoff()' ng-show='logon'>退出</button>
             <span ng-show='email'>Hello, {{email}}</span>

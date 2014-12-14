@@ -296,6 +296,13 @@ footer a:hover {
     transition: 0.5s ease-out all; margin-left: -482px;
     background: #eee; line-height: 36px; height: 36px; padding: 0 9px;
 }
+.input-area {
+    display: inline-block;
+    width: 476px;
+}
+.input-area input[type="password"] {
+    width: 140px;
+}
 .ng-cloak {display: none;}
 
 .spinner {position: fixed; left: 50%; top: 18px; width: 32px; height: 32px;}.cube1, .cube2 {
