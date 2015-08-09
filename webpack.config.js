@@ -5,11 +5,12 @@ module.exports = {
         filename: "app.js"
     },
     resolve: {
-        extensions: ['', '.js', '.jsx']
+        extensions: ['', '.js', '.jsx', '.css']
     },
     module: {
         loaders: [
-            {test: /\.jsx$/, loaders: ['jsx?harmony']}
+            {test: /\.jsx$/, loaders: ['jsx?harmony']},
+            {test: /\.css$/, loader: 'style!css'}
         ]
     }
 };

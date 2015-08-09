@@ -1,6 +1,8 @@
 {
   "devDependencies": {
+    "css-loader": "^0.15.6",
     "jsx-loader": "^0.13.2",
+    "style-loader": "^0.12.3",
     "webpack": "^1.11.0"
   },
   "dependencies": {

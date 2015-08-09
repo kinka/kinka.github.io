@@ -1,4 +1,9 @@
 var React = require("react"),
-    Hello = require("./Hello");
+    Articles = require("./Articles"),
+    Article = require("./Article"),
+    Comet = require("./Comet");
+var article = <Article />;
+React.render(<Articles article={article}/>, Comet.$("#list_article"));
+React.render(article, Comet.$("#md_article"));
 
-React.render(<Hello />, document.body);
+window.Comet = Comet;

@@ -1,0 +1,20 @@
+a,body,div,form,h1,input,li,select,ul {
+    padding: 0; margin: 0; font-size: 16px; outline: 0; -webkit-tap-highlight-color: transparent;
+}
+body {
+    font-family: "Bariol", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 9px;
+}
+
+.list-article {
+    width: 255px;
+    float: left;
+}
+
+.art-items {
+    list-style: gurmukhi inside;
+}
+.art-items li {
+    color: blue;
+    cursor: pointer;
+}
