@@ -18,3 +18,8 @@ body {
     color: blue;
     cursor: pointer;
 }
+
+.md-article {
+    width: -webkit-calc(100% - 255px);
+    float: left;
+}
