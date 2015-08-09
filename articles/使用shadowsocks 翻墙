@@ -1,0 +1,38 @@
+需要申请个shadowsocks 账号，付费的
+
+然后在本地配置转发，从而在浏览器上可以使用插件，或者系统上使用socks5 代理
+
+SwitchyProxy 使用 https://autoproxy-gfwlist.googlecode.com/svn/trunk/gfwlist.txt ，可以自动更新自动代理的规则，比较省事，不用每次自己去设置，挺好的。
+
+	import socks
+	import socket
+	socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 18087)
+	socket.socket = socks.socksocket
+	import urllib2
+	print urllib2.urlopen('http://www.google.com').read()
+
+通过使用rinetd 做端口转发，可以无障碍收发gmail邮件了！比如说：
+
+	/etc/rinetd.conf:
+	0.0.0.0 9993 imap.gmail.com 993
+	0.0.0.0 4465 smtp.gmail.com 465
+	rinetd 运行之
+
+thunderbird 中imap 和 smtp 服务器的相关配置改成对应的本地地址和端口即可。如提示证书错误，确认即可。
+
+可是，后来又发现系统代理设置不了，不走socks代理的话仍然不行。所以，尝试使用了下proxychains, 确实是简单得多了。
+	
+	sudo apt-get install proxychains
+	sudo vim /etc/proxychains.conf 
+	append: socks 127.0.0.1 18087
+	proxychains thunderbird
+	
+done!
+
+
+android studio 中无法使用socks代理下载android sdk的，它只支持http代理，所以无法从dl-ssl.google.com 这个网站上下载SDK。不过，刚发现有个polipo的web cache proxy，它可以轻易地把socks 代理转化成http代理。其实就是让polipo走socks代理啦。ubuntu 下可直接apt-get install. 
+
+polipo 配置： /etc/polipo/config
+
+	socksParentProxy = "0.0.0.0:1028"#把后面的1028改成刚刚配置的shadowsocks本地端口
+	socksProxyType = socks5 #shdadowsocks为socks5代理

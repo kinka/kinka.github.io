@@ -1,0 +1,19 @@
+作为一名前端开发人员，我安装了以下插件：
+
+BracketHighlighter：用于高亮成对符号（引号、括号、标签）的工具。
+
+Color Picker（不是Color Pick）：取色器。
+
+DocBlockr：生成特定格式的函数注释。只要在函数上面一行输入“/**”，按Tab就OK了。
+
+GBK Encoding Support：对GBK编码文件的支持，中文开发者必备。
+
+SidebarEnhancements：增强侧栏文件列表的右键菜单。
+
+Tag：编写HTML的时候可以自动闭合标签。
+
+Tortoise：在侧栏文件列表的右键菜单中，增加Tortoise软件（TortoiseSVN、TortoiseGit、TortoiseHg）的命令。安装此插件后，可能需要修改Tortoise软件的路径。如果路径不正确，则右键菜单中不会出现Tortoise命令。
+
+Zencoding：这个应该不用多说了，快速编写HTML的工具。
+
+**tail -f /var/log/kern.log 达到的功能就是 dmesg | tail -f**

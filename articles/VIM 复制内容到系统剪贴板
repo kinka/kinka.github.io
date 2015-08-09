@@ -1,0 +1,10 @@
+VIM 复制内容到系统剪贴板
+
+需要vim-gtk 的支持 sudo apt-get install vim-gtk
+
+可以查看是否已经支持 vim --version | grep clip
+
++clipboard       +iconv           +path_extra      +toolbar
++eval            +mouse_dec       +startuptime     +xterm_clipboard
+
+然后用鼠标选中内容之后输入 "+y 即可复制到系统剪贴板，更方便点，设置快捷键 vnoremap <C-c> "+y 这样子就可以使用Ctrl+C 了！

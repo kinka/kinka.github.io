@@ -1,0 +1,14 @@
+第一步，安装cordova... 没想到本来很简单的，却纠结了很久，严重影响了进度。
+
+sudo apt-get install nodejs (因为nodejs不叫node，所以 
+
+	sudo update-alternatives --install /usr/local/bin/node node /usr/bin/nodejs 10 
+进行别名链接)，需要注意的是，cordova 还不能用最新的nodejs, ubuntu 自带的那个版本就可以了 0.10.23
+然后安装npm，npm 可以顺便更新到最新
+
+	sudo npm install npm -g
+
+顺便的话  sudo npm install cordova -g 应该 就能安装完成了，问题就是不顺利的话就会有更种千奇百怪的问题，比如版本不对应呀，依赖不对呀等等。。。
+
+还有，代理的问题，最后反而是取消了代理成功安装的。有使用代理的情况下，出现内容被截断了！
+

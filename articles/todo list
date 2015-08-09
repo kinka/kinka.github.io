@@ -1,0 +1,18 @@
+1. 检测内容变化，自动定时保存 -- half done!
+2. 显示最终效果，可以搞个filter! -- done!
+3. 快捷保存 -- done!
+4. 登录提示 -- done...
+5. ng-cloak -- done!
+6. 编辑模式和预览模式区分 -- amazingly done!
+7. 解决标题实时同步问题 -- done
+9. 本地缓存(JS，CSS等静态文件的缓存)
+10. 一个通用的提示框，用CSS动画实现 -- done!
+11. 新增，删除 -- done!
+12. loading 效果  http://www.gbtags.com/gb/share/2779.htm --done!
+13. 权限控制 -- 验证用户的ID -- done
+14. angularfire 的$login居然不支持auth了，要考虑提交个push request -- 其实是有替换方法了，华丽变身为 $scope.blogs.$auth
+15. bug 修复，比如说从preview切换到editing 状态，编辑框为空(其实也不是为空，是状态没有及时更新)；firefox  搞下兼容吧
+16. 美化代码展示
+17. 全屏出现工具条
+
+![这真的是张图片](http://www.joelonsoftware.com/items/2013/07/22invent-thumbnail.JPG)

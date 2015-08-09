@@ -1,0 +1,24 @@
+React DOM 的几个重要术语(概念)：https://facebook.github.io/react/docs/glossary.html#react-components
+
+	ReactElement
+	ReactNode
+	ReactComponent/ReactComponent Class
+
+	type ReactElement = ReactComponentElement | ReactDOMElement;
+
+ReactDOMElement 就简单理解为React对常见标签(div/ul等)的封装，而ReactComponentElement则是自定义标签。
+
+ReactComponet Class 就是一个javascript class，用于声明自定义标签的实现。Class的实例就是一个ReactComponent。
+而这个实例过程最好由React来负责，即调用React.createElement接口完成，得到一个ReactComponentElement。
+
+接下来就是将虚拟DOM添加真实DOM树中，完成展示，即调用React.render()完成。
+
+React.render() 返回的是一个ReactComponent实例，比如：
+
+	var componentA = React.render(<MyComponent />, document.body);
+	
+
+
+
+
+

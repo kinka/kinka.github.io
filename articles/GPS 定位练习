@@ -1,0 +1,86 @@
+在《android4 高级编程》里看到“近距离提醒”这个功能，挺好奇的，所以就来测试下。不过，就昨天的测试结果而言，好像定位精确度还是个硬伤？
+
+我使用的目标地点是房间里获取到的一个坐标，然后检测范围是1米（估计这个精确度是肯定无法达到的），那么在房间里，当然是会触发的，触发了
+一次。但是昨天下午出去，在翻身站的时候，它居然也能够触发？而且是entering 的状态。还好，我只感觉到触发了一次。不过，我觉得在我上下班
+的场景的话，几百米的误差也还是可以接受的。
+
+然后，说回这个GPS定位的问题。试了好久，怎么发现，如果是GPS_PROVIDER的话，监听事件是不会触发onLocationChanged这个事件的。看到
+的一些解释，说是这个事件在传入的坐标相同的时候是不会触发的。这当然也可以理解。只是，我连第一次坐标都无法获取得到哦？再者，使用了
+requestSingleUpdate来注册事件想获取当前坐标也是不行的，但是用NETWORK_PROVIDER的话果断是没有问题滴。
+
+那我就怀疑是自己的手机GPS有问题？再找找资料，那可能就是因为自己没有在空旷的地方了，接受不到卫星的信号。
+
+接着，我又注册另外一个事件 locationManager.addGpsStatusListener(statusListener); 这下子我是能够收到GPS卫星相关事件的回调，然后能够获取
+得到当前有信号的卫星数目这样子的数据，那说明GPS是没问题的。所以，接下来就是打算在户外的时候，能否工作了。
+
+贴下相关的代码：
+
+	String provider = LocationManager.GPS_PROVIDER;
+
+    int t = 1000;     // milliseconds
+    int distance = 0; // meters
+
+    LocationListener myLocationListener = new LocationListener() {
+
+      public void onLocationChanged(Location location) {
+        // Update application based on new location.
+    	  info.append("location changed: " + location.getLatitude() + ", " + location.getLongitude() + "\n");
+      }
+
+      public void onProviderDisabled(String provider){
+        // Update application if provider disabled.
+    	  info.append("provider disabled!\n");
+      }
+
+      public void onProviderEnabled(String provider){
+        // Update application if provider enabled.
+    	  info.append("provider enabled!\n");
+      }
+
+      public void onStatusChanged(String provider, int status,
+                                  Bundle extras){
+        // Update application if provider hardware status changed.
+    	  info.append("status changed: " + provider + ", status: " + status);
+      }
+    };
+    GpsStatus.Listener statusListener = new GpsStatus.Listener() {
+		
+		@Override
+		public void onGpsStatusChanged(int event) {
+			GpsStatus status = locationManager.getGpsStatus(null);
+			GetGPSStatus(event, status);
+		}
+	};
+    locationManager.requestLocationUpdates(provider, t, distance, myLocationListener);
+    locationManager.addGpsStatusListener(statusListener);
+	
+    private void GetGPSStatus(int event, GpsStatus status) {
+	  switch (event) {
+	case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
+		int maxSatellites = status.getMaxSatellites();
+		Iterator<GpsSatellite> it = status.getSatellites().iterator();
+		int count = 0;
+		while (it.hasNext() && count <= maxSatellites) {
+			GpsSatellite s = it.next();
+			count++;
+		}
+		int offset = info.getMeasuredHeight() - scroll.getMeasuredHeight();
+		if (offset > 3000) {
+			info.setText("");
+			offset = 0;
+		}
+		if (offset < 0) offset = 0;
+		scroll.scrollTo(0, offset);
+		info.append("卫星数目：" + count + " offset: "+offset+"\n");
+		break;
+	case GpsStatus.GPS_EVENT_STARTED:
+		info.append("GPS_EVENT_STARTED\n");
+		break;
+	case GpsStatus.GPS_EVENT_STOPPED:
+		info.append("GPS_EVENT_STOPPED\n");
+		break;
+	default:
+		break;
+	}
+  	}
+  

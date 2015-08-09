@@ -1,0 +1,14 @@
+2015年第一个记录。
+
+我的计划是，每周在这里写点东西。内容不限，只重坚持。
+
+居然。。。好久没更新！ 我觉得夏天可以多去溜冰～
+
+没想到竟然也坚持不了多久
+
+ubuntu 增加用户
+
+	useradd -m -s /bin/bash kinka #创建home目录
+	sudo usermod -a -G sudo kinka #添加到sudo用户组
+	
+android:windowSoftInputMode="adjustResize" 这个属性是控制软键盘弹出来时，系统对activity的大小如何控制，adjustResize 就是会改变页面大小，为键盘腾出空间。
