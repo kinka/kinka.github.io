@@ -1,4 +1,8 @@
 {
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kinka/kinka.github.io"
+  },
   "devDependencies": {
     "css-loader": "^0.15.6",
     "jsx-loader": "^0.13.2",
@@ -6,6 +10,8 @@
     "webpack": "^1.11.0"
   },
   "dependencies": {
+    "highlight.js": "^8.7.0",
+    "markdown-styles": "^2.4.0",
     "react": "^0.13.3"
   }
 }

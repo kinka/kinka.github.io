@@ -15,11 +15,11 @@ body {
     list-style: gurmukhi inside;
 }
 .art-items li {
-    color: blue;
+    color: rgb(255, 34, 34);
     cursor: pointer;
 }
 
 .md-article {
-    width: -webkit-calc(100% - 255px);
+    width: -webkit-calc(100% - 255px - 30px);
     float: left;
 }
