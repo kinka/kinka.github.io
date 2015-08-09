@@ -8,33 +8,20 @@ class Item extends React.Component
     constructor() {
         this.state = {loading: false};
     }
-
-    onClick(link) {
-        if (this.state.loading) return;
-        var me = this;
-
-        this.setState({loading: true});
-        fetch(link).then(function(res) {return res.text()})
-            .then(function(data) {
-            console.log(data.length)
-            final();
-        }).catch(final);
-
-        function final() {
-            me.setState({loading: false});
-            if (me.props.onClick)
-                me.props.onClick();
-        }
+    onClick() {
+        if (this.props.onClick)
+            this.props.onClick();
     }
     render() {
-        return <li key={this.props.key}
-        onClick={this.onClick.bind(this, this.props.link)}>{this.props.name}</li>;
+        return <li key={this.props.key} onClick={this.onClick.bind(this)}>{this.props.name}</li>;
     }
 }
 
 class Articles extends React.Component {
+    static get ONDATAFETCH() {return "article.fetch";}
+
     constructor() {
-        this.state = {articles: []}
+        this.state = {articles: [], loading: false}
     }
 
     componentDidMount() {
@@ -42,11 +29,23 @@ class Articles extends React.Component {
             return response.json();
         }).then(function(data) {
             this.setState({articles: data});
+
+            data && data.length > 0 && this.onClick(0);
         }.bind(this));
     }
+
     onClick(i) {
-        console.log(i)
+        var link = this.state.articles[i].download_url;
+
+        return fetch(link).then(function(res) {return res.text()}).then(final).catch(final);
+
+        function final(data) {
+            data && Comet.oncedone.done(Articles.ONDATAFETCH, data);
+
+            return data;
+        }
     }
+
     render() {
         if (this.state.articles.length == 0)
             return <div>加载列表中。。。</div>;

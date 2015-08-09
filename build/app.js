@@ -47,7 +47,7 @@
 	var React = __webpack_require__(1),
 	    Articles = __webpack_require__(157),
 	    Article = __webpack_require__(163),
-	    Comet = __webpack_require__(158);
+	    Comet = __webpack_require__(162);
 	var article = React.createElement(Article, null);
 	React.render(React.createElement(Articles, {article: article}), Comet.$("#list_article"));
 	React.render(article, Comet.$("#md_article"));
@@ -20433,42 +20433,29 @@
 /* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(159);
+	__webpack_require__(158);
 
 	var React = __webpack_require__(1);
-	var Comet = __webpack_require__(158);
+	var Comet = __webpack_require__(162);
 
-	var ____ClassF=React.Component;for(var ____ClassF____Key in ____ClassF){if(____ClassF.hasOwnProperty(____ClassF____Key)){Item[____ClassF____Key]=____ClassF[____ClassF____Key];}}var ____SuperProtoOf____ClassF=____ClassF===null?null:____ClassF.prototype;Item.prototype=Object.create(____SuperProtoOf____ClassF);Item.prototype.constructor=Item;Item.__superConstructor__=____ClassF;
+	var ____Class13=React.Component;for(var ____Class13____Key in ____Class13){if(____Class13.hasOwnProperty(____Class13____Key)){Item[____Class13____Key]=____Class13[____Class13____Key];}}var ____SuperProtoOf____Class13=____Class13===null?null:____Class13.prototype;Item.prototype=Object.create(____SuperProtoOf____Class13);Item.prototype.constructor=Item;Item.__superConstructor__=____Class13;
 	    function Item() {"use strict";
 	        this.state = {loading: false};
 	    }
-
-	    Object.defineProperty(Item.prototype,"onClick",{writable:true,configurable:true,value:function(link) {"use strict";
-	        if (this.state.loading) return;
-	        var me = this;
-
-	        this.setState({loading: true});
-	        fetch(link).then(function(res) {return res.text()})
-	            .then(function(data) {
-	            console.log(data.length)
-	            final();
-	        }).catch(final);
-
-	        function final() {
-	            me.setState({loading: false});
-	            if (me.props.onClick)
-	                me.props.onClick();
-	        }
+	    Object.defineProperty(Item.prototype,"onClick",{writable:true,configurable:true,value:function() {"use strict";
+	        if (this.props.onClick)
+	            this.props.onClick();
 	    }});
 	    Object.defineProperty(Item.prototype,"render",{writable:true,configurable:true,value:function() {"use strict";
-	        return React.createElement("li", {key: this.props.key, 
-	        onClick: this.onClick.bind(this, this.props.link)}, this.props.name);
+	        return React.createElement("li", {key: this.props.key, onClick: this.onClick.bind(this)}, this.props.name);
 	    }});
 
 
-	var ____ClassG=React.Component;for(var ____ClassG____Key in ____ClassG){if(____ClassG.hasOwnProperty(____ClassG____Key)){Articles[____ClassG____Key]=____ClassG[____ClassG____Key];}}var ____SuperProtoOf____ClassG=____ClassG===null?null:____ClassG.prototype;Articles.prototype=Object.create(____SuperProtoOf____ClassG);Articles.prototype.constructor=Articles;Articles.__superConstructor__=____ClassG;
+	var ____Class14=React.Component;for(var ____Class14____Key in ____Class14){if(____Class14.hasOwnProperty(____Class14____Key)){Articles[____Class14____Key]=____Class14[____Class14____Key];}}var ____SuperProtoOf____Class14=____Class14===null?null:____Class14.prototype;Articles.prototype=Object.create(____SuperProtoOf____Class14);Articles.prototype.constructor=Articles;Articles.__superConstructor__=____Class14;
+	    Object.defineProperty(Articles,"ONDATAFETCH",{configurable:true,get:function() {"use strict";return "article.fetch";}});
+
 	    function Articles() {"use strict";
-	        this.state = {articles: []}
+	        this.state = {articles: [], loading: false}
 	    }
 
 	    Object.defineProperty(Articles.prototype,"componentDidMount",{writable:true,configurable:true,value:function() {"use strict";
@@ -20476,11 +20463,23 @@
 	            return response.json();
 	        }).then(function(data) {
 	            this.setState({articles: data});
+
+	            data && data.length > 0 && this.onClick(0);
 	        }.bind(this));
 	    }});
+
 	    Object.defineProperty(Articles.prototype,"onClick",{writable:true,configurable:true,value:function(i) {"use strict";
-	        console.log(i)
+	        var link = this.state.articles[i].download_url;
+
+	        return fetch(link).then(function(res) {return res.text()}).then(final).catch(final);
+
+	        function final(data) {
+	            data && Comet.oncedone.done(Articles.ONDATAFETCH, data);
+
+	            return data;
+	        }
 	    }});
+
 	    Object.defineProperty(Articles.prototype,"render",{writable:true,configurable:true,value:function() {"use strict";
 	        if (this.state.articles.length == 0)
 	            return React.createElement("div", null, "加载列表中。。。");
@@ -20496,25 +20495,15 @@
 
 /***/ },
 /* 158 */
-/***/ function(module, exports) {
-
-	module.exports = {
-	    REPO: "https://api.github.com/repos/kinka/kinka.github.io",
-	    $: function(selector) {return document.querySelector(selector);},
-	    $$: function(selector) {return document.querySelectorAll(selector);}
-	};
-
-/***/ },
-/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(160);
+	var content = __webpack_require__(159);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(162)(content, {});
+	var update = __webpack_require__(161)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -20531,21 +20520,21 @@
 	}
 
 /***/ },
-/* 160 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(161)();
+	exports = module.exports = __webpack_require__(160)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "a,body,div,form,h1,input,li,select,ul {\n    padding: 0; margin: 0; font-size: 16px; outline: 0; -webkit-tap-highlight-color: transparent;\n}\nbody {\n    font-family: \"Bariol\", \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n    margin: 9px;\n}\n\n.list-article {\n    width: 255px;\n    float: left;\n}\n\n.art-items {\n    list-style: gurmukhi inside;\n}\n.art-items li {\n    color: blue;\n    cursor: pointer;\n}", ""]);
+	exports.push([module.id, "a,body,div,form,h1,input,li,select,ul {\n    padding: 0; margin: 0; font-size: 16px; outline: 0; -webkit-tap-highlight-color: transparent;\n}\nbody {\n    font-family: \"Bariol\", \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n    margin: 9px;\n}\n\n.list-article {\n    width: 255px;\n    float: left;\n}\n\n.art-items {\n    list-style: gurmukhi inside;\n}\n.art-items li {\n    color: blue;\n    cursor: pointer;\n}\n\n.md-article {\n    width: -webkit-calc(100% - 256px);\n    float: left;\n}", ""]);
 
 	// exports
 
 
 /***/ },
-/* 161 */
+/* 160 */
 /***/ function(module, exports) {
 
 	/*
@@ -20601,7 +20590,7 @@
 
 
 /***/ },
-/* 162 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -20826,17 +20815,59 @@
 
 
 /***/ },
+/* 162 */
+/***/ function(module, exports) {
+
+	
+	    function OnceDone() {"use strict";
+	        this.dones = {};
+	    }
+
+	    Object.defineProperty(OnceDone.prototype,"once",{writable:true,configurable:true,value:function(event, done) {"use strict";
+	        if (!this.dones[event])
+	            this.dones[event] = [];
+	        this.dones[event].push(done);
+	    }});
+	    Object.defineProperty(OnceDone.prototype,"done",{writable:true,configurable:true,value:function(event, data) {"use strict";
+	        if (this.dones[event] && this.dones[event] instanceof Array)
+	            this.dones[event].map(function(fn) {
+	                fn(data);
+	            });
+	    }});
+	    Object.defineProperty(OnceDone.prototype,"remove",{writable:true,configurable:true,value:function(event, done) {"use strict";
+	        if (!done) return this.dones[event] = [];
+	        return this.dones[event].splice(this.dones[event].indexOf(done), 1);
+	    }});
+
+
+	module.exports = {
+	    REPO: "https://api.github.com/repos/kinka/kinka.github.io",
+	    $: function(selector) {return document.querySelector(selector);},
+	    $$: function(selector) {return document.querySelectorAll(selector);},
+	    oncedone: new OnceDone()
+	};
+
+/***/ },
 /* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(159);
+	__webpack_require__(158);
 
 	var React = __webpack_require__(1);
-	var Comet = __webpack_require__(158);
+	var Comet = __webpack_require__(162);
+	var Articles = __webpack_require__(157);
 
-	var ____Classe=React.Component;for(var ____Classe____Key in ____Classe){if(____Classe.hasOwnProperty(____Classe____Key)){Article[____Classe____Key]=____Classe[____Classe____Key];}}var ____SuperProtoOf____Classe=____Classe===null?null:____Classe.prototype;Article.prototype=Object.create(____SuperProtoOf____Classe);Article.prototype.constructor=Article;Article.__superConstructor__=____Classe;function Article(){"use strict";if(____Classe!==null){____Classe.apply(this,arguments);}}
+	var ____Class10=React.Component;for(var ____Class10____Key in ____Class10){if(____Class10.hasOwnProperty(____Class10____Key)){Article[____Class10____Key]=____Class10[____Class10____Key];}}var ____SuperProtoOf____Class10=____Class10===null?null:____Class10.prototype;Article.prototype=Object.create(____SuperProtoOf____Class10);Article.prototype.constructor=Article;Article.__superConstructor__=____Class10;
+	    function Article() {"use strict";
+	        this.state = {raw: "loading..."};
+	    }
+	    Object.defineProperty(Article.prototype,"componentDidMount",{writable:true,configurable:true,value:function() {"use strict";
+	        Comet.oncedone.once(Articles.ONDATAFETCH, function(data) {
+	            this.setState({raw: data});
+	        }.bind(this));
+	    }});
 	    Object.defineProperty(Article.prototype,"render",{writable:true,configurable:true,value:function() {"use strict";
-	        return React.createElement("div", null, "我是内容")
+	        return React.createElement("div", null, this.state.raw)
 	    }});
 
 
