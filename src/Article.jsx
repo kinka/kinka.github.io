@@ -3,6 +3,7 @@ require("./article.css");
 var React = require("react");
 var Comet = require("./Comet");
 var Articles = require("./Articles");
+var Marked = require("./marked");
 
 class Article extends React.Component {
     constructor() {
@@ -13,8 +14,11 @@ class Article extends React.Component {
             this.setState({raw: data});
         }.bind(this));
     }
+    markitdown() {
+        return {__html: Marked(this.state.raw)};
+    }
     render() {
-        return <div>{this.state.raw}</div>
+        return <div dangerouslySetInnerHTML={this.markitdown()} />
     }
 }
 

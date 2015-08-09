@@ -20,6 +20,6 @@ body {
 }
 
 .md-article {
-    width: -webkit-calc(100% - 256px);
+    width: -webkit-calc(100% - 255px);
     float: left;
 }
