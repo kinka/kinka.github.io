@@ -30,7 +30,7 @@ class Articles extends React.Component {
         }).then(function(data) {
             this.setState({articles: data});
 
-            //data && data.length > 0 && this.onClick(0);
+            data && data.length > 0 && this.onClick(0);
         }.bind(this));
         this.onClick();
     }
@@ -38,10 +38,12 @@ class Articles extends React.Component {
     onClick(i) {
         var link;
         var hash = location.hash && location.hash.substring(1);
-        if (typeof i == 'undefined' && hash)
+        if (typeof i == 'undefined' && hash) {
             link = hash;
-        else
+        } else {
+            if (typeof i == 'undefined') return;
             link = this.state.articles[i].download_url;
+        }
 
         return fetch(link).then(function(res) {return res.text()}).then(final).catch(final);
 
