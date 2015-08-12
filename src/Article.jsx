@@ -11,7 +11,8 @@ class Article extends React.Component {
     }
     componentDidMount() {
         Comet.oncedone.once(Articles.ONDATAFETCH, function(data) {
-            this.setState({raw: data});
+            this.setState({raw: data.content});
+            location.href = location.href.replace(/([^#]*)(#?.*)/, "#" + data.link);
         }.bind(this));
     }
     markitdown() {

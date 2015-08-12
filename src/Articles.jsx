@@ -30,19 +30,25 @@ class Articles extends React.Component {
         }).then(function(data) {
             this.setState({articles: data});
 
-            data && data.length > 0 && this.onClick(0);
+            //data && data.length > 0 && this.onClick(0);
         }.bind(this));
+        this.onClick();
     }
 
     onClick(i) {
-        var link = this.state.articles[i].download_url;
+        var link;
+        var hash = location.hash && location.hash.substring(1);
+        if (typeof i == 'undefined' && hash)
+            link = hash;
+        else
+            link = this.state.articles[i].download_url;
 
         return fetch(link).then(function(res) {return res.text()}).then(final).catch(final);
 
-        function final(data) {
-            data && Comet.oncedone.done(Articles.ONDATAFETCH, data);
+        function final(content) {
+            content && Comet.oncedone.done(Articles.ONDATAFETCH, {content: content, link: link});
 
-            return data;
+            return content;
         }
     }
 
