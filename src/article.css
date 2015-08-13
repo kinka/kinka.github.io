@@ -27,3 +27,14 @@ body {
     position: absolute;
     left: 264px;
 }
+
+@media only screen
+and (max-width: 720px) {
+    .md-article {
+        position: relative;
+        float: left;
+        left: 0;
+        overflow: hidden;
+        margin-top: 18px;
+    }
+}
