@@ -4,6 +4,7 @@ a,body,div,form,h1,input,li,select,ul {
 body {
     font-family: "Bariol", "Helvetica Neue", Helvetica, Arial, sans-serif;
     margin: 9px;
+    position: relative;
 }
 
 .list-article {
@@ -12,14 +13,17 @@ body {
 }
 
 .art-items {
-    list-style: gurmukhi inside;
+    list-style: gurmukhi;
+    list-style: -moz-bengali;
+    list-style-position: inside;
 }
 .art-items li {
+    list-style-position: inside;
     color: rgb(255, 34, 34);
     cursor: pointer;
 }
 
 .md-article {
-    width: -webkit-calc(100% - 255px - 30px);
-    float: left;
+    position: absolute;
+    left: 264px;
 }

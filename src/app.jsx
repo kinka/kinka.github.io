@@ -1,3 +1,4 @@
+require("whatwg-fetch");
 var React = require("react"),
     Articles = require("./Articles"),
     Article = require("./Article"),
