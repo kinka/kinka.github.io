@@ -12,3 +12,25 @@ ubuntu 增加用户
 	sudo usermod -a -G sudo kinka #添加到sudo用户组
 	
 android:windowSoftInputMode="adjustResize" 这个属性是控制软键盘弹出来时，系统对activity的大小如何控制，adjustResize 就是会改变页面大小，为键盘腾出空间。
+
+
+#### 20150815
+
+so long...
+
+update node via npm:
+```
+sudo npm cache clean -f # not necessary
+sudo npm install -g n
+sudo n stable
+```
+instead of using "stable", you could specify a desired version
+```
+sudo n 0.8.21
+```
+
+once your install is complete, confirm your version with:
+```
+node -v
+```
+
