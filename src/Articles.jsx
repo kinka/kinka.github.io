@@ -30,7 +30,9 @@ class Articles extends React.Component {
         }).then(function(data) {
             this.setState({articles: data});
 
-            data && data.length > 0 && this.onClick(0);
+            var hash = location.hash && location.hash.substring(1);
+            if (!hash)
+                data && data.length > 0 && this.onClick(0);
         }.bind(this));
         this.onClick();
     }

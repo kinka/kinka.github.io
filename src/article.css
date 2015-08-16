@@ -19,13 +19,15 @@ body {
 }
 .art-items li {
     list-style-position: inside;
-    color: rgb(255, 34, 34);
+    color: #FF6A22;
     cursor: pointer;
 }
 
 .md-article {
     margin-left: 264px;
 }
+
+.clear {clear: both; display: block;}
 
 @media only screen
 and (max-width: 720px) {
