@@ -4,7 +4,8 @@
 
 在android developer 的下载页面上，其实有提示了，只是当时无视了它：
 
-       Note: You may also need to install the ia32-libs, lib32ncurses5-dev, and lib32stdc++6 packages. These packages are required to support 32-bit apps on a 64-bit machine.
+    Note: You may also need to install the ia32-libs, lib32ncurses5-dev, and lib32stdc++6 packages.
+    These packages are required to support 32-bit apps on a 64-bit machine.
 
 不过，还是要补充下，后来在运行gradle `./gradlew --debug clean build` 的过程中，提示需要libz.so.1, 于是安装之 `sudo apt-get install lib32z1`
 
