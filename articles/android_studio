@@ -1,0 +1,18 @@
+## About Android Studio
+
+系统换成了ubuntu 15.04 64bit, android studio的使用过程还是有些问题的。
+
+在android developer 的下载页面上，其实有提示了，只是当时无视了它：
+       Note: You may also need to install the ia32-libs, lib32ncurses5-dev, and lib32stdc++6 packages. These packages are required to support 32-bit apps on a 64-bit machine.
+
+不过，还是要补充下，后来在运行gradle `./gradlew --debug clean build` 的过程中，提示需要libz.so.1, 于是安装之 `sudo apt-get install lib32z1`
+
+那就可以啦。
+
+这些库的作用，是为了兼容32位的程序，比如说file adb 就可以发现adb其实就是个32位的程序。
+
+然后接下来就比较正常了。
+
+不过，按照以往的经验，gradle build 的时候是需要翻墙来下载相关依赖的，可是这一次如果设置了代理反倒是不行的。
+
+关于设置快捷方式的，是在 /usr/share/applications/ 目录下有很多desktop扩展名的文件，随便复制一个修改修改，那就可以在搜索栏里快速索引，而不用去运行命令行了.
