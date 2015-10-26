@@ -17,3 +17,22 @@ Tortoise：在侧栏文件列表的右键菜单中，增加Tortoise软件（Tort
 Zencoding：这个应该不用多说了，快速编写HTML的工具。
 
 **tail -f /var/log/kern.log 达到的功能就是 dmesg | tail -f**
+
+
+## protobuf
+尝试使用google的protobuf, 在github上拉下来的代码，java版本使用mvn打包一直报错。按照readme说明，应该就是protoc版本不对应了。
+真是奇怪了。另外，在网站上也找不到二进制版本的下载链接，所以反倒是要用google搜索，最后到达页面：
+
+https://github.com/google/protobuf/releases
+
+下载对应语言版本的压缩包，解压就好了。当然，protoc 也要对应版本，不然还是要报错。
+
+最好，用mvn install -P lite生成了一个jar包放在target目录下，在使用到protobuf 生成代码的时候，是需要依赖这个包的。这个包还真不小。。。
+
+如果需要使用代理，请找到mvn的安装目录，打开settings.xml 找到相应项修改即可。
+
+可以使用命令 
+	
+	protoc --java_out=src/main/java -I../src ../src/google/protobuf/descriptor.proto
+
+自己生成对应的proto java文件
