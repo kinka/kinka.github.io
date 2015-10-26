@@ -17,3 +17,17 @@ Tortoise：在侧栏文件列表的右键菜单中，增加Tortoise软件（Tort
 Zencoding：这个应该不用多说了，快速编写HTML的工具。
 
 **tail -f /var/log/kern.log 达到的功能就是 dmesg | tail -f**
+
+### npm udpate nodejs
+```
+    sudo npm cache clean -f
+    sudo npm install -g n
+    sudo n stable
+
+    sudo ln -sf /usr/local/n/versions/node/<VERSION>/bin/node /usr/bin/node 
+```
+
+自己下载二进制包的方法
+sudo tar -C /usr/local --strip-components 1 -xzf node-v0.10.34-linux-x86.tar.gz
+
+
