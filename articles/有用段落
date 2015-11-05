@@ -36,3 +36,29 @@ https://github.com/google/protobuf/releases
 	protoc --java_out=src/main/java -I../src ../src/google/protobuf/descriptor.proto
 
 自己生成对应的proto java文件
+### npm udpate nodejs
+```
+    sudo npm cache clean -f
+    sudo npm install -g n
+    sudo n stable
+
+    sudo ln -sf /usr/local/n/versions/node/<VERSION>/bin/node /usr/bin/node 
+```
+
+自己下载二进制包的方法
+sudo tar -C /usr/local --strip-components 1 -xzf node-v0.10.34-linux-x86.tar.gz
+
+
+jacketli(李军) 11-05 15:23:21
+分享中提到的我们收集的一些资源：
+
+blender 使用教程（视频）：
+https://www.youtube.com/playlist?list=PLNJX5Erk6YjBZJOFmruc-qHS6HWDxXwgG
+
+three.js 源码注释: http://blog.csdn.net/omni360/article/category/2511147/4
+
+基本的光照计算公式 http://www.cnblogs.com/mikewolf2002/archive/2012/02/02/2336006.html
+
+blend材质:http://www.blender-materials.com/type/metal
+
+three.js deom: http://stemkoski.github.io/Three.js/ 
