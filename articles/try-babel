@@ -1,0 +1,16 @@
+webpack 和 babel 结合，学习react
+
+npm install -g webpack # webpack --watch 够好用了
+npm install -g webpack-dev-server # 这是为了实时,内容是缓存在内存中的
+這裏需要注意， webpack.config.js中需要正確指定output.publicPath, 不然無法實時加載。能夠實時回報標記是，會打出HMR的console日志。
+
+npm install react
+npm install react-dom
+
+
+# 最好加上--save-dev
+npm install -g babel-cli
+npm install babel-loader
+npm install babel-core
+npm install babel-preset-es2015
+npm install babel-preset-react
