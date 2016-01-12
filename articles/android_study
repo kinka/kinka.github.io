@@ -9,4 +9,19 @@
 
 可使用LruCache 来进行图片的缓存，使用AsyncTask 异步解码图片
 
-
+重力感应：
+    ```
+    SensorManager manager = (SensorManager) getSysemService(Context.SENSOR_SERVICE);
+    Sensor sensor = sensor.getDefaultSensor(Sensor.ACCELEROMETER);
+    manager.registerListener(...)
+    ```
+当手机倾斜方向改变时，监听器会调用该方法。
+我们要做的，就是填充该方法，用于在重力发生变化时进行我们自己的处理。
+当 x=y=0 时，手机处于水平放置状态。
+当 x=0 并且 y>0 时，手机顶部的水平位置要大于底部，也就是一般接听电话时手机所处的状态。
+当 x=0 并且 y<0 时，手机顶部的水平位置要小于底部。手机一般很少处于这种状态。
+当 y=0 并且 x>0 时，手机右侧的水平位置要大于左侧，也就是右侧被抬起。
+当 y=0 并且 x<0 时，手机右侧的水平位置要小于左侧，也就是左侧被抬起。
+当 z=0 时，手机平面与水平面垂直。
+当 z>0 时，手机屏幕朝上。
+当 z<0 时，手机屏幕朝下。
