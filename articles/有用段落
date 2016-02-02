@@ -71,3 +71,6 @@ flex-basis: the original size of items
 	0: exactly <times> of flex-grow
 	auto: as much as <times> of flex-grow, content relative
 
+看了草案之后，发现更清晰了，其实是这样子的： free-space = (container.width - flex-basis), 
+然后free-space再根据flex-grow按比例进行空间分配, 当flex-basis: 0; 时自然地看到严格按照flex-grow划分了，
+而flex-basis: auto; 则使用的是item width, 剩下的再进行划分，所以会看到不成比例的item
