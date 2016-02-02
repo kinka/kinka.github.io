@@ -62,3 +62,12 @@ three.js 源码注释: http://blog.csdn.net/omni360/article/category/2511147/4
 blend材质:http://www.blender-materials.com/type/metal
 
 three.js deom: http://stemkoski.github.io/Three.js/ 
+
+
+flex-model:[flexbox](https://scotch.io/tutorials/a-visual-guide-to-css3-flexbox-properties)
+[great playground](http://codepen.io/justd/pen/yydezN)
+
+flex-basis: the original size of items
+	0: exactly <times> of flex-grow
+	auto: as much as <times> of flex-grow, content relative
+
