@@ -74,3 +74,17 @@ flex-basis: the original size of items
 看了草案之后，发现更清晰了，其实是这样子的： free-space = (container.width - flex-basis), 
 然后free-space再根据flex-grow按比例进行空间分配, 当flex-basis: 0; 时自然地看到严格按照flex-grow划分了，
 而flex-basis: auto; 则使用的是item width, 剩下的再进行划分，所以会看到不成比例的item
+
+git just clone some directory:
+
+```
+git clone -n <repo> --depth 1
+cd <repo>
+git checkout HEAD name_of_file/name_of_dir
+```
+
+查找文件
+```
+git -lir "string" /etc/
+find / -name "*.*" -exec grep test {} \;
+```
