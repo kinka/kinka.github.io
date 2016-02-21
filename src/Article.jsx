@@ -15,6 +15,13 @@ class Article extends React.Component {
             location.href = location.href.replace(/([^#]*)(#?.*)/, "#" + data.link);
 
             this.loadComment(data.link);
+
+            var md = this.refs.mdPreview && this.refs.mdPreview.getDOMNode();
+            setTimeout(function() {
+                [].forEach.call(md.querySelectorAll("pre code"), function(e) {
+                    hljs.highlightBlock(e);
+                });
+            }, 0);
         }.bind(this));
     }
     loadComment(link) {
@@ -31,10 +38,10 @@ class Article extends React.Component {
         document.body.appendChild(script);
     }
     markitdown() {
-        return {__html: Marked(this.state.raw)};
+        return {__html: Marked(this.state.raw && this.state.raw)};
     }
     render() {
-        return <div dangerouslySetInnerHTML={this.markitdown()} />
+        return <div dangerouslySetInnerHTML={this.markitdown()} ref='mdPreview'/>
     }
 }
 
