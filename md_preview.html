@@ -9,23 +9,43 @@
 <style>
 html, body {height: 100%; }
 body {display: flex;tab-size: 4;}
+#md_raw {font-size: 16px; font-family: monospace; flex-basis: 30%; margin-bottom: 9px; overflow: hidden;}
+#shadow {font-size: 16px; font-family: monospace; position: absolute; right: 0; top: 0; white-space: pre; visibility: hidden;}
 .panel {flex: 1 50%;margin: 0 9px;}
 </style>
 </head>
 <body>
 <textarea id="md_raw" class="panel"></textarea>
 <article id="md_article" class="panel md-article markdown-body"></article>
+<div id="shadow"></div>
 <script src="src/marked.js"></script>
 <script>
 var mdRaw = document.getElementById("md_raw");
 var mdPreview = document.getElementById("md_article");
+var shadow = document.getElementById("shadow");
 mdRaw.focus();
+var initHeight = mdRaw.clientHeight;
+var oldHeight = initHeight;
+var mdRawStyle = getComputedStyle(mdRaw);
 mdRaw.oninput = function() {
     mdPreview.innerHTML = marked(mdRaw.value);
+    shadow.innerHTML = mdRaw.value;
+    var mdRawStyle = getComputedStyle(mdRaw);
+    var newHeight = shadow.scrollHeight - parseInt(mdRawStyle.paddingTop) - parseInt(mdRawStyle.paddingBottom);
+    mdRaw.style.height = Math.max(newHeight, initHeight) + 'px';
+    if (oldHeight < newHeight)
+        window.scroll(0, document.documentElement.scrollHeight);
 }
 window.onkeydown = function(e) {
-    if (e.keyCode == 9) { // tab
-        mdRaw.value += '\t';
+    if (e.target == mdRaw && e.keyCode == 9) { // tab
+        var posStart = mdRaw.selectionStart,
+            posEnd = mdRaw.selectionEnd;
+        console.log('before', posStart);
+        mdRaw.value = mdRaw.value.substr(0, posStart) + "\t" + mdRaw.value.substr(posEnd);
+        mdRaw.focus();
+        mdRaw.selectionStart = posStart + 1;
+        mdRaw.selectionEnd = posEnd + 1;
+        console.log('after', mdRaw.selectionStart);
         return false;
     }
 }
