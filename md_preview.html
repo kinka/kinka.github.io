@@ -35,6 +35,7 @@ mdRaw.oninput = function() {
     mdRaw.style.height = Math.max(newHeight, initHeight) + 'px';
     if (oldHeight < newHeight)
         window.scroll(0, document.documentElement.scrollHeight);
+    [].forEach.call(document.querySelectorAll("pre code"), function(code) {hljs.highlightBlock(code);});
 }
 window.onkeydown = function(e) {
     if (e.target == mdRaw && e.keyCode == 9) { // tab
@@ -50,5 +51,7 @@ window.onkeydown = function(e) {
     }
 }
 </script>
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/default.min.css">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
 </body>
 </html>
