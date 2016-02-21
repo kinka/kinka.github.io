@@ -38,3 +38,15 @@ Once we have our own keystore, we can change the default debug keystore of andro
 There are two ways, we can modify for android studio menu File -> Project Struture, find our app and switch to signing tab. setting debug, release or other mode.
 
 Or manually, change the file build.gradle under some module. Actually, the setting will be read by android studio and show in the UI.
+
+### about gradle
+
+gradle 这货，大家都说好，可是好在哪里？而且很多时候似是而非，经常达不到想要的效果。所以还是决定好好深入学习一下。
+
+gradle 的功能定位，也就是一个构造工具，跟grunt, make等类似。优势在于可以直接写groovy代码，灵活性提高了。而groovy是java的一个超集，之于java可以认为是增加了不少有用的语法糖。比如说文件操作，字符串操作等等方便了很多。不过对于我来说，问题也在于这里了，一开始搞不清楚什么DSL和groovy的差别，所以才有似是而非的问题。
+
+我现在是这么看待gradle配置文件的编写的：buildscript blocks + task。buildscript blocks也就那几个，sourcesets, repositories等等用来初始化环境，task就是一个个独立的批处理。
+
+但是，也还有一个重要的概念，就是gradle脚本执行时候的生命周期。它是会先执行配置，然后解决依赖关系得到一个单向的任务执行列表。所以在使用java/android等插件的时候，我们想自定义一些操作，就要根据需要在指定的任务之前或者之后，插入自己的任务。那gradle肯定也是支持了这种hook了。
+
+为了方便开发者使用，gradle也内置了一系列的Task Type，比如说Copy, JavaDoc等，这个也就是封装常用操作，而我们就只需要填填参数就好了。
