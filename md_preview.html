@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" type="text/css" href="build/md/mixu-radar/assets/css/style.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="build/md/mixu-radar/assets/css/hljs-github.min.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="build/md/mixu-radar/assets/css/pilcrow.css" media="screen" />
+<style>
+html, body {height: 100%; }
+body {display: flex;tab-size: 4;}
+.panel {flex: 1 50%;margin: 0 9px;}
+</style>
+</head>
+<body>
+<textarea id="md_raw" class="panel"></textarea>
+<article id="md_article" class="panel md-article markdown-body"></article>
+<script src="src/marked.js"></script>
+<script>
+var mdRaw = document.getElementById("md_raw");
+var mdPreview = document.getElementById("md_article");
+mdRaw.focus();
+mdRaw.oninput = function() {
+    mdPreview.innerHTML = marked(mdRaw.value);
+}
+window.onkeydown = function(e) {
+    if (e.keyCode == 9) { // tab
+        mdRaw.value += '\t';
+        return false;
+    }
+}
+</script>
+</body>
+</html>
