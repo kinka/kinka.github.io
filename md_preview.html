@@ -12,6 +12,14 @@ body {display: flex;tab-size: 4;}
 #md_raw {font-size: 16px; font-family: monospace; flex-basis: 30%; margin-bottom: 9px; overflow: hidden;}
 #shadow {font-size: 16px; font-family: monospace; position: absolute; right: 0; top: 0; white-space: pre; visibility: hidden;}
 .panel {flex: 1 50%;margin: 0 9px;}
+
+.toc-list {list-style: none; margin: 0; padding: 0;}
+.toc-list li {line-height: 36px; height: 36px;}
+.toc-level-1 {margin-left: 0; font-size: 32px;}
+.toc-level-2 {margin-left: 9px; font-size: 28px;}
+.toc-level-3 {margin-left: 18px; font-size: 24px;}
+.toc-level-4 {margin-left: 27px; font-size: 20px;}
+.toc-level-5 {margin-left: 36px; font-size: 16px;}
 </style>
 </head>
 <body>
@@ -28,14 +36,23 @@ var initHeight = mdRaw.clientHeight;
 var oldHeight = initHeight;
 var mdRawStyle = getComputedStyle(mdRaw);
 mdRaw.oninput = function() {
-    mdPreview.innerHTML = marked(mdRaw.value);
+    toc = [];
+    var content = marked(mdRaw.value, {highlight: highlight, renderer: renderer});
+    mdPreview.innerHTML = genTOC(toc) + content;
     shadow.innerHTML = mdRaw.value;
     var mdRawStyle = getComputedStyle(mdRaw);
     var newHeight = shadow.scrollHeight - parseInt(mdRawStyle.paddingTop) - parseInt(mdRawStyle.paddingBottom);
     mdRaw.style.height = Math.max(newHeight, initHeight) + 'px';
     if (oldHeight < newHeight)
         window.scroll(0, document.documentElement.scrollHeight);
-    [].forEach.call(document.querySelectorAll("pre code"), function(code) {hljs.highlightBlock(code);});
+}
+function genTOC(toc) {
+    var content = '<ul class="toc-list">';
+    toc.forEach(function(e, i) {
+        content += '<li class="toc-level-'+e.level+'"><a href="#'+e.anchor+'">'+e.text+'</a></li>';
+    });
+    content += '</ul>';
+    return content;
 }
 window.onkeydown = function(e) {
     if (e.target == mdRaw && e.keyCode == 9) { // tab
@@ -50,6 +67,33 @@ window.onkeydown = function(e) {
         return false;
     }
 }
+function highlight(code) {
+    return hljs.highlightAuto(code).value;
+}
+var toc = [];
+var renderer = (function() {
+    var renderer = new marked.Renderer();
+    renderer.heading = function(text, level, raw) {
+      var anchor = this.options.headerPrefix + raw.toLowerCase().replace(/[^\w]+/g, '-');
+      toc.push({
+        anchor: anchor,
+        level: level,
+        text: text
+      });
+      return '<h'
+      + level
+      + ' id="'
+      + anchor
+      + '">'
+      + '<a name="#'+anchor+'" class="toc-anchor"></a>'
+      + text
+      + '</h'
+      + level
+      + '>'
+    };
+    return renderer;
+})();
+
 </script>
 <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/default.min.css">
 <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
