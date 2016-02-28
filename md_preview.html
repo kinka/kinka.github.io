@@ -27,49 +27,20 @@ body {display: flex;tab-size: 4;}
 <article id="md_article" class="panel md-article markdown-body"></article>
 <div id="shadow"></div>
 <script src="src/marked.js"></script>
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/default.min.css">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
 <script>
-var mdRaw = document.getElementById("md_raw");
-var mdPreview = document.getElementById("md_article");
-var shadow = document.getElementById("shadow");
-mdRaw.focus();
-var initHeight = mdRaw.clientHeight;
-var oldHeight = initHeight;
-var mdRawStyle = getComputedStyle(mdRaw);
-mdRaw.oninput = function() {
-    toc = [];
-    var content = marked(mdRaw.value, {highlight: highlight, renderer: renderer});
-    mdPreview.innerHTML = genTOC(toc) + content;
-    shadow.innerHTML = mdRaw.value;
-    var mdRawStyle = getComputedStyle(mdRaw);
-    var newHeight = shadow.scrollHeight - parseInt(mdRawStyle.paddingTop) - parseInt(mdRawStyle.paddingBottom);
-    mdRaw.style.height = Math.max(newHeight, initHeight) + 'px';
-    if (oldHeight < newHeight)
-        window.scroll(0, document.documentElement.scrollHeight);
-}
-function genTOC(toc) {
-    var content = '<ul class="toc-list">';
-    toc.forEach(function(e, i) {
-        content += '<li class="toc-level-'+e.level+'"><a href="#'+e.anchor+'">'+e.text+'</a></li>';
-    });
-    content += '</ul>';
-    return content;
-}
-window.onkeydown = function(e) {
-    if (e.target == mdRaw && e.keyCode == 9) { // tab
-        var posStart = mdRaw.selectionStart,
-            posEnd = mdRaw.selectionEnd;
-        console.log('before', posStart);
-        mdRaw.value = mdRaw.value.substr(0, posStart) + "\t" + mdRaw.value.substr(posEnd);
-        mdRaw.focus();
-        mdRaw.selectionStart = posStart + 1;
-        mdRaw.selectionEnd = posEnd + 1;
-        console.log('after', mdRaw.selectionStart);
-        return false;
+var store = function() {
+    return {
+        set: function(data) {
+            localStorage['kk_md'] = data;
+        },
+        get: function() {
+            return localStorage['kk_md'] || '';
+        }
     }
-}
-function highlight(code) {
-    return hljs.highlightAuto(code).value;
-}
+}();
+
 var toc = [];
 var renderer = (function() {
     var renderer = new marked.Renderer();
@@ -94,8 +65,53 @@ var renderer = (function() {
     return renderer;
 })();
 
+var mdRaw = document.getElementById("md_raw");
+var mdPreview = document.getElementById("md_article");
+var shadow = document.getElementById("shadow");
+mdRaw.focus();
+var initHeight = mdRaw.clientHeight;
+var oldHeight = initHeight;
+var mdRawStyle = getComputedStyle(mdRaw);
+mdRaw.oninput = function() {
+    toc = [];
+    var content = marked(mdRaw.value, {highlight: highlight, renderer: renderer});
+    mdPreview.innerHTML = genTOC(toc) + content;
+    shadow.innerHTML = mdRaw.value;
+    var mdRawStyle = getComputedStyle(mdRaw);
+    var newHeight = shadow.scrollHeight - parseInt(mdRawStyle.paddingTop) - parseInt(mdRawStyle.paddingBottom);
+    mdRaw.style.height = Math.max(newHeight, initHeight) + 'px';
+    if (oldHeight < newHeight)
+        window.scroll(0, document.documentElement.scrollHeight);
+    store.set(mdRaw.value);
+}
+mdRaw.value = store.get();
+mdRaw.oninput();
+
+function genTOC(toc) {
+    var content = '<ul class="toc-list">';
+    toc.forEach(function(e, i) {
+        content += '<li class="toc-level-'+e.level+'"><a href="#'+e.anchor+'">'+e.text+'</a></li>';
+    });
+    content += '</ul>';
+    return content;
+}
+window.onkeydown = function(e) {
+    if (e.target == mdRaw && e.keyCode == 9) { // tab
+        var posStart = mdRaw.selectionStart,
+            posEnd = mdRaw.selectionEnd;
+        console.log('before', posStart);
+        mdRaw.value = mdRaw.value.substr(0, posStart) + "\t" + mdRaw.value.substr(posEnd);
+        mdRaw.focus();
+        mdRaw.selectionStart = posStart + 1;
+        mdRaw.selectionEnd = posEnd + 1;
+        console.log('after', mdRaw.selectionStart);
+        return false;
+    }
+}
+function highlight(code) {
+    return window.hljs && hljs.highlightAuto(code).value;
+}
+
 </script>
-<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/default.min.css">
-<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
 </body>
 </html>
