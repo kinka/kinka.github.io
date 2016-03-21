@@ -11,6 +11,16 @@ ubuntu 增加用户
 	useradd -m -s /bin/bash kinka #创建home目录
 	sudo usermod -a -G sudo kinka #添加到sudo用户组
 	
+
+visudo
+
+%wheel
+
+sudo "PATH=$PATH" godi_console
+
+关于$PS1, 即  kinka@xxx$ 这种显示
+http://spazzzz.blog.51cto.com/2707720/614112
+
 android:windowSoftInputMode="adjustResize" 这个属性是控制软键盘弹出来时，系统对activity的大小如何控制，adjustResize 就是会改变页面大小，为键盘腾出空间。
 
 
