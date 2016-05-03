@@ -1,0 +1,18 @@
+chrome 中安装flash debug plugin
+参考这个链接 https://forums.adobe.com/thread/1819231
+
+然后我步骤就是找到已经安装的flash debug pp plugin, 替换掉正常的flash插件版本，当然，要做个备份。
+
+debug插件路径：
+C:\Windows\System32\Macromed\Flash\pepflashplayer64_<current version>.dll
+
+正式版本插件路径：
+C:\Program Files (x86)\Google\Chrome\Application\<current version of chrome>\PepperFlash\pepflashplayer.dll
+
+chrome://plugins中可以先禁用正式插件，替换后再启用，就能直接用上debug插件了。
+
+然后Vizzy flash tracer 就能检测到chrome里的flash插件，然后输出trace结果
+
+flashbuilder 也可以调试chrome里的swf了，就算是线上的文件也行。
+
+在运行配置里，有个选项 "要启动的URL或路径"，把“使用默认值勾选去掉”，填入目标链接即可。然后调试之。
