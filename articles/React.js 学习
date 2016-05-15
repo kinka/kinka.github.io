@@ -16,9 +16,33 @@ ReactComponet Class 就是一个javascript class，用于声明自定义标签�
 React.render() 返回的是一个ReactComponent实例，比如：
 
 	var componentA = React.render(<MyComponent />, document.body);
-	
 
 
+react-native
 
+npm install react-native --save-dev
 
+react-native start/bundle/run-android
 
+flow/nuclide/atom
+
+react react-native 已经分离
+
+reactnative.cn taobao npm
+
+debug功能依旧不能用，很郁闷
+不知道从哪个版本开始，react-native builde.gralde对react-native aar的依赖都放到了node_modules里，
+所以整合node到现有工程的话，也要修改全局的build.gradle, 增加mavenLocal()，配置maven url, 从node_modules中读取
+```
+        mavenLocal()
+        jcenter()
+        maven {
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url "$projectDir/../node_modules/react-native/android"
+        }
+```
+惨痛的代码，我又删除了本地代码。。。
+
+flow能用了，还行吧，原来之前不行还是因为镜像被墙的问题
+Nuclide 的很多功能其实在非MAC上都用不了，还是不要再浪费时间去尝试那些功能了。
+chrome dev tools 也看不到界面的，只能调试JS代码，也是勉强
