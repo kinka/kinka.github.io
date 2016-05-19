@@ -46,3 +46,5 @@ debug功能依旧不能用，很郁闷
 flow能用了，还行吧，原来之前不行还是因为镜像被墙的问题
 Nuclide 的很多功能其实在非MAC上都用不了，还是不要再浪费时间去尝试那些功能了。
 chrome dev tools 也看不到界面的，只能调试JS代码，也是勉强
+
+http://www.infoq.com/cn/articles/react-native-layout
