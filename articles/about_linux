@@ -1,0 +1,3 @@
+ubuntu 15.10 keyboard backlight auto turn on when login, add this to /etc/rc.local
+
+    `echo 0 | sudo dd of=/sys/class/leds/tpacpi\:\:kbd_backlight/brightness`
