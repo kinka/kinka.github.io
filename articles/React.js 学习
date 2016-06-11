@@ -48,3 +48,6 @@ Nuclide 的很多功能其实在非MAC上都用不了，还是不要再浪费时
 chrome dev tools 也看不到界面的，只能调试JS代码，也是勉强
 
 http://www.infoq.com/cn/articles/react-native-layout
+
+Image source 在混合模式下，好像不会去读assets目录下的图片，所以不使用require('./img/xx.png') 而是使用 {uri: 'app_icon'} 这种方式就可以了。
+
