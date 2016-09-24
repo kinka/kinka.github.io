@@ -1,3 +1,13 @@
 ubuntu 15.10 keyboard backlight auto turn on when login, add this to /etc/rc.local
 
-    `echo 0 | sudo dd of=/sys/class/leds/tpacpi\:\:kbd_backlight/brightness`
+    echo 0 | sudo dd of=/sys/class/leds/tpacpi\:\:kbd_backlight/brightness
+
+把`/etc/dbus-1/system.d/org.freedesktop.UPower.conf`中对应Kbd_light的标签改为deny
+
+
+update ubuntu:
+```
+sudo apt-ge update && sudo apt-get dist-upgrade
+sudo reboot #depends
+sudo update-manager -d
+```
